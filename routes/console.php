@@ -124,6 +124,24 @@ Artisan::command('tc:blog-content {--force : Overwrite articles that already exi
     }
 })->purpose('Add the starter blog articles (skips ones that already exist)');
 
+Artisan::command('tc:landing-ecommerce {--force : Reset the page content to the default text}', function () {
+    $lp = \App\Models\LandingPage::firstOrNew(['slug' => 'ecommerce-store']);
+    if ($lp->exists && ! $this->option('force')) {
+        $this->line('skip  /lp/ecommerce-store already exists (use --force to reset its content)');
+
+        return;
+    }
+    $d = \App\Support\EcomLanding::defaults();
+    $lp->fill([
+        'title' => 'E-commerce Store – Ads', 'template' => 'ecommerce', 'content' => $d, 'heading' => $d['hero']['heading'],
+        'seo_title' => 'Online Store in 7–10 Days | Shopify, WooCommerce, Custom',
+        'seo_description' => 'Brand, store and launch — done for you. Shopify, WooCommerce or custom e-commerce with UPI, COD, shipping and GST ready. Starting at ₹14,999.',
+        'is_visible' => true, 'noindex' => true, 'show_projects' => true, 'show_testimonials' => true,
+        'service_id' => \App\Models\Service::where('slug', 'shopify-store-development')->value('id'),
+    ])->save();
+    $this->info('ready  '.route('landing', $lp));
+})->purpose('Create the e-commerce landing page at /lp/ecommerce-store');
+
 Schedule::command('tc:check-sites')->everyFiveMinutes()->withoutOverlapping();
 Schedule::command('tc:check-ssl')->dailyAt('06:30');
 Schedule::command('tc:daily-digest')->dailyAt('09:00');

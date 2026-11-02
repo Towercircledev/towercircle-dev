@@ -104,7 +104,8 @@
                 <a href="{{ route('contact') }}" class="btn btn-primary btn-sm cta">Get a Free Quote</a>
                 <button class="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg class="icon"><use href="#i-menu"/></svg></button>
             @else
-                <a href="tel:+91{{ site('phone') }}" class="btn btn-light btn-sm" style="margin-left:auto"><svg class="icon"><use href="#i-phone"/></svg> +91 {{ site('phone') }}</a>
+                <a href="tel:+91{{ site('phone') }}" class="btn btn-light btn-sm lp-phone" style="margin-left:auto"><svg class="icon"><use href="#i-phone"/></svg> <span>+91 {{ site('phone') }}</span></a>
+                <a href="#quote" class="btn btn-primary btn-sm lp-quote">Get a Free Quote</a>
             @endunless
         </div>
     </header>

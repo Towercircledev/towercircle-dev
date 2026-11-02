@@ -106,7 +106,7 @@ class SiteController extends Controller
     {
         abort_unless($landingPage->is_visible, 404);
 
-        return view('site.landing', [
+        return view($landingPage->template === 'ecommerce' ? 'site.landing-ecommerce' : 'site.landing', [
             'lp' => $landingPage,
             'projects' => $landingPage->show_projects ? Project::visible()->take(4)->get() : collect(),
             'reviews' => $landingPage->show_testimonials ? Testimonial::visible()->take(6)->get() : collect(),

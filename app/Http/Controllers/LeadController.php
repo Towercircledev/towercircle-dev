@@ -27,12 +27,20 @@ class LeadController extends Controller
             'budget' => ['nullable', Rule::in(array_keys(Lead::BUDGETS))],
             'timeline' => ['nullable', Rule::in(array_keys(Lead::TIMELINES))],
             'message' => ['nullable', 'string', 'max:3000'],
-            'form' => ['nullable', 'in:contact,audit,landing,quote'],
+            'form' => ['nullable', 'in:contact,audit,landing,quote,ecommerce'],
+            'extra' => ['nullable', 'array', 'max:8'],
+            'extra.*' => ['nullable', 'string', 'max:300'],
         ], [
             'phone.regex' => 'Please enter a valid 10-digit mobile number.',
         ]);
 
         $data['phone'] = substr(preg_replace('/\D/', '', $data['phone']), -10);
+        // Extra questions from long landing pages are kept in the message, one per line.
+        if ($extra = array_filter((array) ($data['extra'] ?? []), fn ($v) => filled($v))) {
+            $lines = collect($extra)->map(fn ($v, $k) => mb_substr((string) $k, 0, 60).': '.$v)->implode("\n");
+            $data['message'] = trim($lines."\n".($data['message'] ?? ''));
+        }
+        unset($data['extra']);
         $attr = $request->session()->get('attr', []);
 
         $lead = Lead::create($data + [

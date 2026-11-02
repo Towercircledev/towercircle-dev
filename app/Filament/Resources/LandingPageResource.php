@@ -16,6 +16,8 @@ use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
@@ -41,34 +43,42 @@ class LandingPageResource extends Resource
                 Section::make('Page')->columns(2)->schema([
                     Fields::title()->label('Internal name')->helperText('e.g. Shopify – Google Ads'),
                     Fields::slug('lp'),
-                    TextInput::make('eyebrow')->label('Small line above heading')->maxLength(80)->placeholder('Shopify experts in India'),
-                    TextInput::make('offer')->label('Offer badge')->maxLength(80)->placeholder('Free store audit this month'),
-                    TextInput::make('heading')->required()->maxLength(120)->columnSpanFull()
+                    Select::make('template')->options(LandingPage::TEMPLATES)->default('standard')->required()->live()->columnSpanFull()
+                        ->afterStateUpdated(function (Set $set, Get $get, ?string $state) {
+                            if ($state === 'ecommerce' && empty($get('content.hero.heading'))) {
+                                $set('content', \App\Support\EcomLanding::defaults());
+                            }
+                        })
+                        ->helperText('E-commerce: the long page with journey, packages, timeline and FAQ — edit it in the tabs below.'),
+                    TextInput::make('eyebrow')->label('Small line above heading')->visible(fn (Get $get) => $get('template') !== 'ecommerce')->maxLength(80)->placeholder('Shopify experts in India'),
+                    TextInput::make('offer')->label('Offer badge')->visible(fn (Get $get) => $get('template') !== 'ecommerce')->maxLength(80)->placeholder('Free store audit this month'),
+                    TextInput::make('heading')->required(fn (Get $get) => $get('template') !== 'ecommerce')->visible(fn (Get $get) => $get('template') !== 'ecommerce')->maxLength(120)->columnSpanFull()
                         ->helperText('Match the Google search. e.g. "Shopify Store Development That Brings Sales"'),
-                    Textarea::make('subheading')->rows(2)->maxLength(300)->columnSpanFull(),
-                    TextInput::make('price_from')->label('Starting price')->numeric()->prefix('₹'),
+                    Textarea::make('subheading')->rows(2)->maxLength(300)->columnSpanFull()->visible(fn (Get $get) => $get('template') !== 'ecommerce'),
+                    TextInput::make('price_from')->visible(fn (Get $get) => $get('template') !== 'ecommerce')->label('Starting price')->numeric()->prefix('₹'),
                     Select::make('service_id')->label('Related service')->relationship('service', 'title')
                         ->helperText('Saved with each lead from this page'),
                 ]),
-                Section::make('Why choose us')->schema([
+                Section::make('Why choose us')->visible(fn (Get $get) => $get('template') !== 'ecommerce')->schema([
                     Repeater::make('benefits')->hiddenLabel()->schema([
                         TextInput::make('title')->required()->maxLength(80),
                         Textarea::make('text')->rows(2)->maxLength(200),
                     ])->columns(2)->defaultItems(0)->maxItems(6)->addActionLabel('Add benefit')
                         ->itemLabel(fn (array $state) => $state['title'] ?? null)->collapsible(),
                 ]),
-                Section::make('How it works')->collapsed()->schema([
+                Section::make('How it works')->visible(fn (Get $get) => $get('template') !== 'ecommerce')->collapsed()->schema([
                     Repeater::make('steps')->hiddenLabel()->schema([
                         TextInput::make('title')->required()->maxLength(60),
                         TextInput::make('text')->maxLength(160),
                     ])->columns(2)->defaultItems(0)->maxItems(5)->addActionLabel('Add step'),
                 ]),
-                Section::make('Questions & answers')->collapsed()->schema([
+                Section::make('Questions & answers')->visible(fn (Get $get) => $get('template') !== 'ecommerce')->collapsed()->schema([
                     Repeater::make('faqs')->hiddenLabel()->schema([
                         TextInput::make('q')->label('Question')->required(),
                         Textarea::make('a')->label('Answer')->rows(2)->required(),
                     ])->defaultItems(0)->addActionLabel('Add question')->itemLabel(fn (array $state) => $state['q'] ?? null)->collapsible(),
                 ]),
+                \App\Filament\Support\EcomLandingForm::tabs()->visible(fn (Get $get) => $get('template') === 'ecommerce'),
                 Fields::seo(),
             ]),
             Group::make()->columnSpan(1)->schema([
@@ -76,7 +86,7 @@ class LandingPageResource extends Resource
                     TextInput::make('form_heading')->maxLength(80)->placeholder('Get a free quote in 2 hours'),
                     TextInput::make('cta_label')->label('Button text')->maxLength(40)->placeholder('Get my free quote'),
                 ]),
-                Section::make('Image')->schema([Fields::image('hero_image', 'landing', 'Hero image')
+                Section::make('Image')->visible(fn (Get $get) => $get('template') !== 'ecommerce')->schema([Fields::image('hero_image', 'landing', 'Hero image')
                     ->helperText('Optional. Without one, the homepage illustration is used.')]),
                 Section::make('Options')->schema([
                     Toggle::make('show_projects')->label('Show recent projects')->default(true),
@@ -94,6 +104,7 @@ class LandingPageResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('title')->searchable()->weight('bold')->description(fn ($record) => '/lp/'.$record->slug),
+                TextColumn::make('template')->badge()->formatStateUsing(fn ($state) => $state === 'ecommerce' ? 'E-commerce' : 'Standard'),
                 TextColumn::make('service.title')->placeholder('—'),
                 TextColumn::make('leads')->label('Leads (30 days)')
                     ->state(fn (LandingPage $record) => \App\Models\Lead::where('page_url', 'like', '%/lp/'.$record->slug.'%')->where('created_at', '>=', now()->subDays(30))->count()),
