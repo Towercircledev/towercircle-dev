@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->web(append: [\App\Http\Middleware\CaptureAttribution::class]);
         $middleware->trustProxies(at: '*');
+        $middleware->prepend(\App\Http\Middleware\CanonicalHost::class);
         $middleware->encryptCookies(except: ['_fbp', '_fbc', '_ga']);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
