@@ -470,3 +470,18 @@ button, input, select, textarea { font: inherit; color: inherit; }
     .feature-media { padding: 18px; }
     .logo-row img { height: 36px; max-width: 120px; }
 }
+
+/* Form controls: one height, custom arrow, locked service field */
+.field input, .field select { height: 48px; line-height: 1.2; padding-top: 0; padding-bottom: 0; color: var(--ink); }
+.field input::placeholder, .field textarea::placeholder { color: #9a97ad; }
+.field select {
+    -webkit-appearance: none; appearance: none; padding-left: 14px; padding-right: 40px; cursor: pointer;
+    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%237a1a6e' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 15px center;
+}
+.field select:has(option[value=""]:checked) { color: #9a97ad; }
+.field select option { color: var(--ink); }
+.field input[readonly] {
+    background: #f6f2fb url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5' fill='none' stroke='%237a1a6e' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 14px center;
+    border-color: #e6dcef; color: var(--plum); font-weight: 500; padding-right: 40px; cursor: default; text-overflow: ellipsis;
+}
+.field input[readonly]:focus { box-shadow: none; border-color: #e6dcef; }
