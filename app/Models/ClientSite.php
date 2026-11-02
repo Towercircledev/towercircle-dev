@@ -25,10 +25,19 @@ class ClientSite extends Model
         'last_checked_at' => 'datetime',
         'down_since' => 'datetime',
         'ssl_expires_on' => 'date',
+        'domain_password' => 'encrypted',
+        'hosting_password' => 'encrypted',
     ];
 
     protected static function booted(): void
     {
+        static::updated(function (ClientSite $s) {
+            $changed = array_keys(array_intersect_key($s->getChanges(), array_flip(['domain_login', 'domain_password', 'hosting_login', 'hosting_password'])));
+            if ($changed && $s->client) {
+                \App\Models\Activity::log($s->client, 'note', 'Updated '.str_replace('_', ' ', implode(', ', $changed)).' for '.$s->domain);
+            }
+        });
+
         static::saving(function (ClientSite $s) {
             $s->domain = strtolower(preg_replace('#^https?://(www\.)?|/.*$#', '', trim($s->domain)));
             if (! $s->live_url && $s->domain) {

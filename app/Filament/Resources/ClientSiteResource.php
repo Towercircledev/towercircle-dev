@@ -52,6 +52,14 @@ class ClientSiteResource extends Resource
                 TextInput::make('hosting_plan'),
                 TextInput::make('server_ip')->label('Server IP'),
             ]),
+            Section::make('Domain & hosting logins')->columns(2)->columnSpanFull()
+                ->description('Stored encrypted. Only admins can see these.')
+                ->visible(fn () => auth()->user()?->isAdmin())->schema([
+                    TextInput::make('domain_login')->label('Domain account email / username')->placeholder('client.domain@gmail.com')->copyable()->autocomplete('off'),
+                    TextInput::make('domain_password')->label('Domain account password')->password()->revealable()->copyable()->autocomplete('new-password'),
+                    TextInput::make('hosting_login')->label('Hosting account email / username')->placeholder('client.hosting@gmail.com')->copyable()->autocomplete('off'),
+                    TextInput::make('hosting_password')->label('Hosting account password')->password()->revealable()->copyable()->autocomplete('new-password'),
+                ]),
             Section::make('Email')->columns(2)->columnSpanFull()->schema([
                 Select::make('email_provider')->options(ClientSite::EMAIL_PROVIDERS),
                 TextInput::make('mailboxes')->label('Number of mailboxes')->numeric()->minValue(0),
