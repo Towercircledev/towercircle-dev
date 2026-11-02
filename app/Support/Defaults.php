@@ -12,7 +12,7 @@ class Defaults
                 'eyebrow' => 'Technology · Digital · Growth',
                 'heading' => 'Websites That Bring You Customers',
                 'highlight' => 'Customers',
-                'text' => 'Websites, Shopify stores and custom business software — plus Google & Meta ads that bring real enquiries. One team for everything your business needs online.',
+                'text' => 'Websites, Shopify stores and custom business software — plus Google, Meta and Amazon ads that bring real enquiries and sales. One team for everything your business needs online.',
                 'cta' => 'Get a Free Quote',
                 'cta2' => 'WhatsApp Us',
                 'image' => null,
@@ -20,7 +20,7 @@ class Defaults
             'highlights' => [
                 ['title' => 'Shopify Stores', 'text' => 'Online stores set up to sell from day one.'],
                 ['title' => 'Custom Websites', 'text' => 'Fast business websites built to rank on Google.'],
-                ['title' => 'Digital & Performance Marketing', 'text' => 'Google & Meta ads that bring leads, not just clicks.'],
+                ['title' => 'Digital & Performance Marketing', 'text' => 'Google, Meta and Amazon ads that bring leads and sales, not just clicks.'],
                 ['title' => 'Speed & SEO', 'text' => 'Slow site? We make it load in under 2 seconds.'],
             ],
             'about' => [

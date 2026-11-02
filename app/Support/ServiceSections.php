@@ -140,6 +140,37 @@ class ServiceSections
                 ],
             ],
 
+            'amazon-ppc-management' => [
+                [
+                    'eyebrow' => 'Step 1 · Account audit',
+                    'heading' => 'We Find Where Your Ad Spend Is Leaking',
+                    'default_image' => 'img/svc/research.webp',
+                    'body' => '<p>We start with a detailed audit of your Amazon Ads account and search term reports: which keywords bring profitable sales, which ones burn budget with clicks but no orders, and where competitors are taking sales you should be winning.</p><p>We also check each product\'s margin, current ranking and listing quality, so we know the ACoS each product can actually afford — instead of chasing one number for the whole account.</p>',
+                    'points' => ['Search term and wasted-spend analysis', 'Margin and break-even ACoS per product', 'Competitor and category research', 'Clear list of quick wins'],
+                ],
+                [
+                    'eyebrow' => 'Step 2 · Listing first',
+                    'heading' => 'Make Every Click More Likely to Buy',
+                    'default_image' => 'img/svc/design.webp',
+                    'body' => '<p>Ads only bring people to your product page — the listing has to do the selling. Before scaling spend, we review titles, main images, bullet points, A+ content, price and reviews against the top sellers in your category.</p><p>Small listing fixes often raise conversion rate quickly, which lowers ACoS on every campaign and helps organic ranking too.</p>',
+                    'points' => ['Title and keyword placement', 'Main image and infographic suggestions', 'Bullets and A+ content review', 'Price and review comparison'],
+                ],
+                [
+                    'eyebrow' => 'Step 3 · Campaign structure',
+                    'heading' => 'A Clean Structure That Is Easy to Control',
+                    'default_image' => 'img/svc/marketing.webp',
+                    'body' => '<p>We rebuild campaigns into a clear structure: automatic campaigns to discover new searches, broad and phrase to grow, exact match for proven winners, product targeting against competitors, and brand defence for your own brand name.</p><p>Winning search terms are moved to exact match every week, and irrelevant ones are blocked with negative keywords — so budget keeps flowing to what sells.</p>',
+                    'points' => ['Auto, broad, phrase and exact campaigns', 'Product and competitor targeting', 'Sponsored Brands and Display', 'Weekly keyword harvesting and negatives'],
+                ],
+                [
+                    'eyebrow' => 'Step 4 · Optimise & report',
+                    'heading' => 'Bids Based on Profit, Reports You Can Understand',
+                    'default_image' => 'img/svc/analytics.webp',
+                    'body' => '<p>Bids are adjusted regularly by product margin, time of day and placement — pushing harder on searches that rank you and pulling back on ones that don\'t pay off.</p><p>Every month you get a simple report: ad sales, total sales, ACoS, TACoS, top keywords and ranking movement, plus what we\'ll test next. You can see everything in your own Amazon Ads account at any time.</p>',
+                    'points' => ['Bid and budget optimisation', 'ACoS and TACoS tracking', 'Ranking movement for key searches', 'Monthly plain-language report'],
+                ],
+            ],
+
             'custom-software-development' => [
                 [
                     'eyebrow' => 'Step 1 · Understand the workflow',

@@ -126,6 +126,7 @@ HTML,
 <ul>
 <li><strong>Google Ads</strong> — Search campaigns that catch people already looking for what you sell, plus Performance Max and YouTube where it makes sense.</li>
 <li><strong>Meta Ads</strong> — Facebook and Instagram campaigns for brand awareness, leads and online sales, with creatives that stop the scroll.</li>
+<li><strong>Amazon Ads</strong> — Sponsored Products, Brands and Display for marketplace sellers (see <a href="/services/amazon-ppc-management">Amazon PPC management</a>).</li>
 <li><strong>Landing pages</strong> — a dedicated page for each campaign, matched to the ad, with a short form and WhatsApp button.</li>
 <li><strong>Tracking</strong> — Google Analytics 4, Google Ads conversions, Meta Pixel and Conversions API, so the platforms learn which clicks become customers.</li>
 </ul>
@@ -144,9 +145,41 @@ HTML,
                 ],
             ],
 
+            'amazon-ppc-management' => [
+                'title' => 'Amazon PPC Management',
+                'sort' => 4,
+                'icon' => 's5',
+                'short' => 'Amazon Sponsored Products, Brands and Display ads managed for profitable sales — lower ACoS, better ranking, clear reporting.',
+                'seo_title' => 'Amazon PPC Management Agency in India – Amazon Ads',
+                'seo_description' => 'Amazon PPC management for sellers on Amazon.in: Sponsored Products, Sponsored Brands and Display ads, keyword harvesting, ACoS/TACoS optimisation and listing improvements.',
+                'body' => <<<'HTML'
+<p>On Amazon, ads decide who gets seen. But without a clear structure, PPC quickly turns into high ACoS, wasted clicks on irrelevant searches and ads that bring sales today but no lasting ranking.</p>
+<p>We manage Amazon advertising for sellers on Amazon.in (and other marketplaces) with one goal: <strong>profitable growth</strong>. That means the right campaign structure, constant keyword research, bids based on your margins, and listings that convert the traffic you pay for.</p>
+<h2>Who this is for</h2>
+<ul>
+<li>Brands and sellers already on Amazon whose ad spend keeps rising but profit doesn't</li>
+<li>New products that need a strong launch to start ranking organically</li>
+<li>Brand-registered sellers ready to use Sponsored Brands, video and Display ads</li>
+<li>Shopify / D2C brands expanding to Amazon</li>
+</ul>
+HTML,
+                'features' => [
+                    'Sponsored Products, Sponsored Brands and Sponsored Display', 'Campaign structure: auto, broad, phrase, exact and product targeting',
+                    'Keyword harvesting and negative keywords every week', 'Bids set by your margin and target ACoS', 'Product launch campaigns for new ASINs',
+                    'Brand defence and competitor targeting', 'Listing review: title, images, bullets, A+ content', 'Monthly report: sales, ACoS, TACoS, ranking',
+                ],
+                'faqs' => [
+                    ['q' => 'What are ACoS and TACoS?', 'a' => 'ACoS is ad spend divided by ad sales. TACoS is ad spend divided by your total sales (ads + organic). We watch both: a healthy account sees TACoS fall over time as organic sales grow.'],
+                    ['q' => 'How much should I spend on Amazon ads?', 'a' => 'It depends on your category, margins and goals (launch vs profit). We\'ll suggest a starting budget after auditing your account and products.'],
+                    ['q' => 'Do you need access to my Seller Central?', 'a' => 'We need access to the Amazon Ads console and limited Seller Central reports. You add us as a user — you never share your password, and you can remove access any time.'],
+                    ['q' => 'How soon will I see results?', 'a' => 'Wasted spend usually drops within the first 2–3 weeks. Ranking and organic growth build over 2–3 months of consistent optimisation.'],
+                    ['q' => 'Do you also manage Flipkart ads?', 'a' => 'Yes, we can manage Flipkart and other marketplace ads with the same approach. Ask us on WhatsApp.'],
+                ],
+            ],
+
             'custom-software-development' => [
                 'title' => 'Custom Software (CRM, HRM, ERP)',
-                'sort' => 4,
+                'sort' => 5,
                 'icon' => 's6',
                 'short' => 'CRM, HRM, ERP, billing and booking software built around how your business actually works — not the other way round.',
                 'seo_title' => 'Custom CRM, HRM & ERP Software Development in India',
@@ -186,7 +219,7 @@ HTML,
 
             'website-speed-seo' => [
                 'title' => 'Website Speed & SEO',
-                'sort' => 5,
+                'sort' => 6,
                 'icon' => 's5',
                 'short' => 'Slow or invisible on Google? We fix speed, technical SEO and your Google Business Profile so customers find you.',
                 'seo_title' => 'Website Speed Optimisation & SEO Services',
@@ -216,7 +249,7 @@ HTML,
 
             'domain-hosting' => [
                 'title' => 'Domains & Hosting',
-                'sort' => 6,
+                'sort' => 7,
                 'icon' => 's4',
                 'short' => 'Domain registration, fast cloud hosting, business email and SSL — fully managed, with renewals handled for you.',
                 'seo_title' => 'Domain, Hosting & Business Email Services',
@@ -245,7 +278,7 @@ HTML,
 
             'website-maintenance' => [
                 'title' => 'Website Maintenance',
-                'sort' => 7,
+                'sort' => 8,
                 'icon' => 's6',
                 'short' => 'Monthly care plans: updates, backups, security checks and small changes whenever you need them.',
                 'seo_title' => 'Website Maintenance & Support Plans',
