@@ -145,7 +145,7 @@
                         @endforeach
                     </div>
                 </div>
-                <div class="reveal"><img src="{{ asset('img/features.webp') }}" alt="" width="700" height="602" loading="lazy"></div>
+                <div class="reveal"><img src="{{ media(home('process.image'), 'img/features.webp') }}" alt="How Towercircle works" width="700" height="602" loading="lazy" style="height:auto"></div>
             </div>
         </section>
     @endif

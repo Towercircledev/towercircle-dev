@@ -102,6 +102,7 @@ class HomepageContent extends Page implements HasForms
                     TextInput::make('title')->required()->maxLength(40),
                     TextInput::make('text')->maxLength(140),
                 ])->columns(2)->maxItems(4)->columnSpanFull(),
+                Fields::image('process.image', 'home', 'Picture on the right (optional)')->columnSpanFull(),
             ]),
             Section::make('Other homepage sections')->collapsed()->columns(2)->schema([
                 Toggle::make('show.services')->label('Services')->default(true),
