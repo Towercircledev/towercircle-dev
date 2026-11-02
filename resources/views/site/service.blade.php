@@ -22,39 +22,17 @@
 @section('content')
     @include('partials.page-title', ['title' => $service->title, 'parent' => ['Services', route('services')], 'lead' => $service->short_description])
 
+    {{-- Intro + quote form --}}
     <section class="section">
         <div class="container layout-side">
             <div>
                 <div class="prose">{!! $service->body !!}</div>
-
-                @if (! empty($service->features))
-                    <h2 style="margin-top:40px">What's included</h2>
-                    <ul class="ticks grid g-2" style="gap:4px 26px">
-                        @foreach ($service->features as $f)
-                            <li><svg class="icon"><use href="#i-check"/></svg>{{ is_array($f) ? ($f['item'] ?? '') : $f }}</li>
-                        @endforeach
-                    </ul>
-                @endif
-
-                @if (! empty($service->faqs))
-                    <h2 style="margin-top:50px">Common questions</h2>
-                    <div class="faq">
-                        @foreach ($service->faqs as $f)
-                            <details><summary>{{ $f['q'] }}</summary><div>{{ $f['a'] }}</div></details>
-                        @endforeach
-                    </div>
-                @endif
-
-                @if ($projects->isNotEmpty())
-                    <h2 style="margin-top:50px">Recent work</h2>
-                    <div class="grid g-2">
-                        @foreach ($projects as $item)
-                            @include('partials.cards', ['type' => 'project'])
-                        @endforeach
-                    </div>
-                @endif
+                <div class="trust" style="margin-top:26px">
+                    <span><svg class="icon"><use href="#i-check"/></svg>100+ websites delivered</span>
+                    <span><svg class="icon"><use href="#i-check"/></svg>Fixed price before we start</span>
+                    <span><svg class="icon"><use href="#i-check"/></svg>WhatsApp support</span>
+                </div>
             </div>
-
             <aside class="sticky">
                 <div class="side-box">
                     @if ($service->price_from)
@@ -64,17 +42,102 @@
                     <h3>Get a free quote</h3>
                     @include('partials.lead-form', ['form' => 'quote', 'compact' => true, 'fixedService' => $service->title, 'button' => 'Get My Quote'])
                 </div>
-                @if ($others->isNotEmpty())
-                    <div class="side-box">
-                        <h3>Other services</h3>
-                        <ul>
-                            @foreach ($others as $o)
-                                <li style="margin-bottom:8px"><a href="{{ route('services.show', $o) }}" class="link-arrow">{{ $o->title }} <svg class="icon"><use href="#i-arrow"/></svg></a></li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
             </aside>
         </div>
     </section>
+
+    {{-- Image + text sections, alternating --}}
+    @if (! empty($service->sections))
+        <section class="section bg-soft" style="padding-top:80px">
+            <div class="container">
+                <div class="section-head">
+                    <span class="eyebrow">How we work</span>
+                    <h2>How We Deliver Your {{ \Illuminate\Support\Str::of($service->title)->before('(')->trim() }}</h2>
+                    <p>A clear, step-by-step process — so you always know what's happening and what comes next.</p>
+                </div>
+                @foreach ($service->sections as $i => $sec)
+                    @php($img = ! empty($sec['image']) ? media(is_array($sec['image']) ? reset($sec['image']) : $sec['image']) : (! empty($sec['default_image']) ? asset($sec['default_image']) : null))
+                    <div class="feature-row {{ $i % 2 ? 'flip' : '' }} reveal">
+                        <div class="feature-media">
+                            @if ($img)<img src="{{ $img }}" alt="{{ $sec['heading'] }}" loading="lazy">@endif
+                            <span class="feature-num">{{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}</span>
+                        </div>
+                        <div class="feature-text">
+                            @if (! empty($sec['eyebrow']))<span class="eyebrow">{{ $sec['eyebrow'] }}</span>@endif
+                            <h2>{{ $sec['heading'] }}</h2>
+                            <div class="prose">{!! $sec['body'] !!}</div>
+                            @if (! empty($sec['points']))
+                                <ul class="ticks feature-points">
+                                    @foreach ($sec['points'] as $p)
+                                        <li><svg class="icon"><use href="#i-check"/></svg>{{ is_array($p) ? ($p['p'] ?? '') : $p }}</li>
+                                    @endforeach
+                                </ul>
+                            @endif
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </section>
+    @endif
+
+    {{-- What's included --}}
+    @if (! empty($service->features))
+        <section class="section">
+            <div class="container">
+                <div class="section-head">
+                    <span class="eyebrow">What's included</span>
+                    <h2>Everything You Get</h2>
+                </div>
+                <div class="grid g-3 include-grid">
+                    @foreach ($service->features as $f)
+                        <div class="include-item reveal"><span class="icon-box grad"><svg class="icon"><use href="#i-check"/></svg></span>{{ is_array($f) ? ($f['item'] ?? '') : $f }}</div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
+
+    {{-- Projects --}}
+    @if ($projects->isNotEmpty())
+        <section class="section bg-soft">
+            <div class="container">
+                <div class="section-head"><span class="eyebrow">Recent work</span><h2>Projects We've Delivered</h2></div>
+                <div class="grid g-2">
+                    @foreach ($projects as $item)
+                        @include('partials.cards', ['type' => 'project'])
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
+
+    {{-- FAQs --}}
+    @if (! empty($service->faqs))
+        <section class="section">
+            <div class="container" style="max-width:860px">
+                <div class="section-head"><span class="eyebrow">FAQ</span><h2>Common Questions</h2></div>
+                <div class="faq">
+                    @foreach ($service->faqs as $f)
+                        <details @if ($loop->first) open @endif><summary>{{ $f['q'] }}</summary><div>{{ $f['a'] }}</div></details>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
+
+    {{-- Other services --}}
+    @if ($others->isNotEmpty())
+        <section class="section bg-soft">
+            <div class="container">
+                <div class="section-head"><h2>Other Services</h2></div>
+                <div class="grid g-3">
+                    @foreach ($others as $item)
+                        @include('partials.cards', ['type' => 'service'])
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
+
+    @include('partials.cta', ['heading' => 'Let\'s Talk About Your Project', 'fixedService' => $service->title, 'pt' => '96px'])
 @endsection

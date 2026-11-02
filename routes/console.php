@@ -81,6 +81,10 @@ Artisan::command('tc:daily-digest', function () {
 Artisan::command('tc:service-content {--force : Overwrite pages you already edited}', function () {
     foreach (\App\Support\ServiceContent::all() as $slug => $c) {
         $s = \App\Models\Service::firstOrNew(['slug' => $slug]);
+        if ($s->exists && empty($s->sections) && ($sections = \App\Support\ServiceSections::for($slug))) {
+            $s->update(['sections' => $sections]);
+            $this->info("sections added  $slug");
+        }
         $placeholder = ! $s->exists || mb_strlen(strip_tags((string) $s->body)) < 400;
         if (! $placeholder && ! $this->option('force')) {
             $this->line("skip  $slug (already has content)");
@@ -89,6 +93,7 @@ Artisan::command('tc:service-content {--force : Overwrite pages you already edit
         $s->fill([
             'title' => $c['title'], 'short_description' => $c['short'], 'body' => $c['body'],
             'features' => $c['features'], 'faqs' => $c['faqs'],
+            'sections' => \App\Support\ServiceSections::for($slug) ?: $s->sections,
             'seo_title' => $s->seo_title ?: $c['seo_title'], 'seo_description' => $s->seo_description ?: $c['seo_description'],
         ]);
         if (! $s->exists) {

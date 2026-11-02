@@ -6,6 +6,7 @@ use App\Filament\Resources\ServiceResource\Pages;
 use App\Filament\Support\Fields;
 use App\Models\Service;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Textarea;
@@ -47,6 +48,22 @@ class ServiceResource extends Resource
                     Repeater::make('features')->label('What\'s included')->simple(TextInput::make('item')->required()->maxLength(150))
                         ->addActionLabel('Add item')->reorderable()->defaultItems(0),
                 ]),
+                Section::make('Image + text sections')
+                    ->description('Shown one after another with the picture alternating left and right. Use them to explain how you research, plan, build and support.')
+                    ->collapsed()->schema([
+                        Repeater::make('sections')->hiddenLabel()->schema([
+                            TextInput::make('eyebrow')->label('Small label')->maxLength(60)->placeholder('Step 1 · Research'),
+                            TextInput::make('heading')->required()->maxLength(120),
+                            RichEditor::make('body')->required()->toolbarButtons(['bold', 'italic', 'link', 'bulletList', 'orderedList'])->columnSpanFull(),
+                            Repeater::make('points')->label('Tick points')->simple(TextInput::make('p')->required()->maxLength(100))->maxItems(6)->defaultItems(0)->columnSpanFull(),
+                            FileUpload::make('image')->label('Picture')->image()->disk('public')->directory('services')
+                                ->saveUploadedFileUsing(fn ($file) => \App\Support\ImageOptimizer::store($file, 'services'))
+                                ->helperText('Optional. Without a picture, the built-in illustration is used. Real photos of your team or work build the most trust.')
+                                ->columnSpanFull(),
+                            \Filament\Forms\Components\Hidden::make('default_image'),
+                        ])->columns(2)->collapsible()->itemLabel(fn (array $state) => $state['heading'] ?? null)
+                            ->addActionLabel('Add section')->maxItems(6)->defaultItems(0),
+                    ]),
                 Section::make('Questions & answers')->description('Shown on this service page and given to Google as FAQ data.')->collapsed()->schema([
                     Repeater::make('faqs')->hiddenLabel()->schema([
                         TextInput::make('q')->label('Question')->required(),

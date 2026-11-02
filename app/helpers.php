@@ -44,7 +44,11 @@ if (! function_exists('media')) {
             return $fallback ? asset($fallback) : null;
         }
 
-        return str_starts_with($path, 'http') ? $path : Storage::disk('public')->url($path);
+        if (str_starts_with($path, 'http')) {
+            return $path;
+        }
+
+        return str_starts_with($path, 'img/') ? asset($path) : Storage::disk('public')->url($path);
     }
 }
 

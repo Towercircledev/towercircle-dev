@@ -27,14 +27,6 @@ class ServiceContent
 <li>Instagram and WhatsApp sellers who want a proper store with automatic orders and payments</li>
 <li>Businesses moving from WooCommerce, Wix or another platform to Shopify</li>
 </ul>
-<h2>How we build your store</h2>
-<ol>
-<li><strong>Plan</strong> — we understand your products, customers and competitors, and choose the right Shopify plan and theme.</li>
-<li><strong>Design</strong> — a clean, mobile-first design in your brand colours. You approve it before we build.</li>
-<li><strong>Set up</strong> — products, collections, menus, payments (Razorpay, UPI, cards, COD), shipping rates, GST, policies and emails.</li>
-<li><strong>Add the extras that sell</strong> — WhatsApp chat, reviews, discount codes, abandoned-cart reminders and Google/Meta tracking.</li>
-<li><strong>Launch and train</strong> — we connect your domain, test real orders and show you how to run the store yourself.</li>
-</ol>
 <h2>Already on Shopify?</h2>
 <p>We also redesign slow or outdated Shopify stores, speed them up, fix checkout problems and set up proper tracking so your ads stop wasting money.</p>
 HTML,
@@ -75,13 +67,6 @@ HTML,
 <li>Manufacturers and traders who need a professional company profile and product catalogue</li>
 <li>Startups that need a landing page fast, with room to grow</li>
 </ul>
-<h2>Our process</h2>
-<ol>
-<li><strong>Discovery call</strong> — your business, customers and the websites you like.</li>
-<li><strong>Design</strong> — homepage design first, then inner pages. You approve before we build.</li>
-<li><strong>Build and content</strong> — development, content entry, forms, tracking and testing on mobile and desktop.</li>
-<li><strong>Launch</strong> — domain connected, SSL on, Google set up, and a training session for you.</li>
-</ol>
 HTML,
                 'features' => [
                     'Unique design — no copy-paste templates', 'Mobile-first and fast-loading', 'Enquiry forms, WhatsApp and call buttons',
@@ -144,13 +129,6 @@ HTML,
 <li><strong>Landing pages</strong> — a dedicated page for each campaign, matched to the ad, with a short form and WhatsApp button.</li>
 <li><strong>Tracking</strong> — Google Analytics 4, Google Ads conversions, Meta Pixel and Conversions API, so the platforms learn which clicks become customers.</li>
 </ul>
-<h2>How we work</h2>
-<ol>
-<li><strong>Audit and plan</strong> — your goals, budget, competitors and past results.</li>
-<li><strong>Set up tracking and landing pages</strong> before spending a rupee on ads.</li>
-<li><strong>Launch and test</strong> — several ads and audiences, then move budget to what works.</li>
-<li><strong>Report monthly</strong> — leads, cost per lead, sales and what we'll improve next. No jargon.</li>
-</ol>
 <p>Your ad budget is paid directly to Google and Meta from your own account — you stay in full control.</p>
 HTML,
                 'features' => [
@@ -191,13 +169,6 @@ HTML,
 <li>Your data on your own server, with backups</li>
 <li>Connects with what you already use — website, Tally/Excel exports, payment gateway, WhatsApp, email</li>
 </ul>
-<h2>How we build it</h2>
-<ol>
-<li><strong>Understand the workflow</strong> — we sit with your team and map how work moves today.</li>
-<li><strong>Prototype</strong> — clickable screens so you can see it before we code.</li>
-<li><strong>Build in phases</strong> — the most important module first, live in weeks, then the rest.</li>
-<li><strong>Train and support</strong> — staff training, documentation and ongoing improvements.</li>
-</ol>
 HTML,
                 'features' => [
                     'CRM with lead pipeline and follow-ups', 'HRM: attendance, leave and payroll', 'ERP: inventory, purchase and sales',

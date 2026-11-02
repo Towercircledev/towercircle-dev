@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
 
         foreach (\App\Support\ServiceContent::all() as $slug => $c) {
             Service::firstOrCreate(['slug' => $slug], [
-                'title' => $c['title'], 'short_description' => $c['short'], 'body' => $c['body'],
+                'title' => $c['title'], 'short_description' => $c['short'], 'body' => $c['body'], 'sections' => \App\Support\ServiceSections::for($slug),
                 'features' => $c['features'], 'faqs' => $c['faqs'], 'is_featured' => true, 'sort' => $c['sort'],
                 'seo_title' => $c['seo_title'], 'seo_description' => $c['seo_description'],
             ]);

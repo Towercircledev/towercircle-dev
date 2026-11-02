@@ -13,6 +13,7 @@ class Service extends Model
 
     protected $casts = [
         'features' => 'array',
+        'sections' => 'array',
         'faqs' => 'array',
         'is_featured' => 'boolean',
         'is_visible' => 'boolean',
