@@ -104,6 +104,26 @@ Artisan::command('tc:service-content {--force : Overwrite pages you already edit
     }
 })->purpose('Fill service pages with the written starter content (skips pages you have edited)');
 
+Artisan::command('tc:blog-content {--force : Overwrite articles that already exist}', function () {
+    $i = 0;
+    foreach (\App\Support\BlogContent::all() as $slug => $m) {
+        $post = \App\Models\Post::firstOrNew(['slug' => $slug]);
+        if ($post->exists && ! $this->option('force')) {
+            $this->line("skip  $slug (already exists)");
+            continue;
+        }
+        $post->fill([
+            'title' => $m['title'], 'excerpt' => $m['excerpt'], 'body' => \App\Support\BlogContent::body($slug),
+            'tags' => $m['tags'], 'cover' => $post->cover ?: $m['cover'], 'author' => 'Team '.site('name'),
+            'seo_title' => $m['seo_title'], 'seo_description' => $m['excerpt'],
+            'is_published' => true,
+            'published_at' => $post->published_at ?? now()->subDays(3 * $i + 1)->setTime(10, 0),
+        ])->save();
+        $i++;
+        $this->info("added $slug");
+    }
+})->purpose('Add the starter blog articles (skips ones that already exist)');
+
 Schedule::command('tc:check-sites')->everyFiveMinutes()->withoutOverlapping();
 Schedule::command('tc:check-ssl')->dailyAt('06:30');
 Schedule::command('tc:daily-digest')->dailyAt('09:00');
