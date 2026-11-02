@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CaptureAttribution
 {
-    public const KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid'];
+    public const KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'fbclid'];
 
     public function handle(Request $request, Closure $next): Response
     {

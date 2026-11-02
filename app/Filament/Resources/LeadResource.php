@@ -70,6 +70,7 @@ class LeadResource extends Resource
                 TextEntry::make('utm_campaign')->label('Campaign')->placeholder('—'),
                 TextEntry::make('utm_term')->label('Keyword')->placeholder('—'),
                 TextEntry::make('gclid')->label('Google click ID')->placeholder('—')->limit(30),
+                TextEntry::make('fbclid')->label('Facebook click ID')->placeholder('—')->limit(30),
                 TextEntry::make('landing_url')->label('First page visited')->placeholder('—')->columnSpanFull(),
                 TextEntry::make('page_url')->label('Form submitted on')->placeholder('—')->columnSpanFull(),
             ]),
@@ -98,6 +99,7 @@ class LeadResource extends Resource
             ->filters([
                 SelectFilter::make('status')->options(Lead::STATUSES)->multiple(),
                 SelectFilter::make('budget')->options(Lead::BUDGETS)->multiple(),
+                Filter::make('meta_ads')->label('From Meta Ads')->query(fn (Builder $query) => $query->where(fn ($q) => $q->whereNotNull('fbclid')->orWhereIn('utm_source', ['facebook', 'fb', 'instagram', 'ig', 'meta']))),
                 Filter::make('google_ads')->label('From Google Ads')->query(fn (Builder $query) => $query->whereNotNull('gclid')),
                 Filter::make('due')->label('Follow-up due')->query(fn (Builder $query) => $query->whereDate('follow_up_on', '<=', today())),
             ])

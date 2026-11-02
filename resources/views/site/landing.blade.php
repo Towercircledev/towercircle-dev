@@ -103,5 +103,5 @@
             <a href="#quote" class="btn btn-primary">{{ $lp->cta_label ?: 'Get My Free Quote' }} <svg class="icon"><use href="#i-arrow"/></svg></a>
         </div>
     </section>
-    <footer class="copyright center" style="margin:0"><div class="container" style="justify-content:center">© {{ date('Y') }} {{ site('name') }} · <a href="{{ route('home') }}">towercircle.in</a></div></footer>
+    <footer class="copyright center" style="margin:0"><div class="container" style="justify-content:center">© {{ date('Y') }} {{ site('name') }} · <a href="{{ route('home') }}">towercircle.in</a> · <a href="{{ route('privacy') }}">Privacy Policy</a> · <a href="{{ route('terms') }}">Terms</a></div></footer>
 @endsection

@@ -62,6 +62,12 @@ class HomepageContent extends Page implements HasForms
                     TextInput::make('text')->maxLength(120),
                 ])->columns(2)->minItems(4)->maxItems(4)->reorderable(false)->addable(false)->deletable(false),
             ]),
+            Section::make('Logo strips')->collapsed()->columns(2)
+                ->description('Logos are added under Website → Logos. A strip only appears when it has logos.')->schema([
+                self::toggle('logos'),
+                TextInput::make('logos.client_heading')->label('Client logos heading')->maxLength(80),
+                TextInput::make('logos.platform_heading')->label('Platform logos heading')->maxLength(80),
+            ]),
             Section::make('About section')->collapsed()->columns(2)->schema([
                 self::toggle('about'),
                 TextInput::make('about.eyebrow')->maxLength(40),

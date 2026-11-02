@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Middleware\CaptureAttribution;
 use App\Models\Lead;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 
 class LeadController extends Controller
@@ -41,31 +39,12 @@ class LeadController extends Controller
             'form' => $data['form'] ?? 'contact',
             'page_url' => mb_substr((string) $request->headers->get('referer'), 0, 250),
             'ip' => $request->ip(),
+            'user_agent' => mb_substr((string) $request->userAgent(), 0, 300),
+            'fbp' => mb_substr((string) $request->cookie('_fbp'), 0, 190) ?: null,
         ] + array_intersect_key($attr, array_flip([...CaptureAttribution::KEYS, 'landing_url', 'referrer'])));
 
-        $this->notify($lead);
+        dispatch(fn () => \App\Services\LeadAlerts::dispatch($lead))->afterResponse();
 
         return redirect()->route('thanks')->with('lead_id', $lead->id);
-    }
-
-    private function notify(Lead $lead): void
-    {
-        $to = array_filter(array_map('trim', explode(',', (string) site('lead_emails', site('email')))));
-        if (! $to) {
-            return;
-        }
-        $budget = Lead::BUDGETS[$lead->budget] ?? '—';
-        $body = "New enquiry from the website\n\n"
-            ."Name: {$lead->name}\nPhone: {$lead->phone}\nEmail: ".($lead->email ?: '—')."\n"
-            .'Service: '.($lead->service ?: '—')."\nBudget: {$budget}\nWebsite: ".($lead->website ?: '—')."\n\n"
-            .($lead->message ?: '')."\n\nSource: ".$lead->sourceLabel()."\n"
-            .'WhatsApp: https://wa.me/91'.$lead->phone."\n"
-            .'Open in admin: '.url('/admin/leads/'.$lead->id.'/edit');
-
-        try {
-            Mail::raw($body, fn ($m) => $m->to($to)->subject('New lead: '.$lead->name.($lead->service ? ' – '.$lead->service : '')));
-        } catch (\Throwable $e) {
-            Log::warning('Lead email failed: '.$e->getMessage());
-        }
     }
 }

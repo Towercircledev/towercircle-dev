@@ -45,12 +45,28 @@ class Lead extends Model
                 $lead->converted_at = now();
             }
         });
+        // A won Meta lead is reported back to Meta as a Purchase, so ads optimise for real clients.
+        static::updated(function (Lead $lead) {
+            if ($lead->wasChanged('status') && $lead->status === 'won' && ($lead->fbclid || $lead->fbp)) {
+                try {
+                    \App\Services\LeadAlerts::meta($lead, 'Purchase');
+                } catch (\Throwable $e) {
+                    \Illuminate\Support\Facades\Log::warning('Meta purchase event failed: '.$e->getMessage());
+                }
+            }
+        });
     }
 
     public function sourceLabel(): string
     {
         if ($this->gclid) {
             return 'Google Ads';
+        }
+        if ($this->fbclid && ! $this->utm_source) {
+            return 'Meta Ads';
+        }
+        if (in_array(strtolower((string) $this->utm_source), ['facebook', 'fb', 'instagram', 'ig', 'meta'], true)) {
+            return 'Meta Ads'.($this->utm_medium ? ' / '.$this->utm_medium : '');
         }
         if ($this->utm_source) {
             return trim($this->utm_source.' / '.$this->utm_medium, ' /');

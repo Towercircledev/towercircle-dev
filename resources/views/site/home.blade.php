@@ -50,6 +50,10 @@
         @endforeach
     </section>
 
+    @if ($show('logos'))
+        @include('partials.logos')
+    @endif
+
     {{-- About --}}
     @if ($show('about'))
         <section class="section">

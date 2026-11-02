@@ -9,10 +9,10 @@ class Defaults
     {
         return [
             'hero' => [
-                'eyebrow' => 'Websites · Shopify · Hosting',
+                'eyebrow' => 'Technology · Digital · Growth',
                 'heading' => 'Websites That Bring You Customers',
                 'highlight' => 'Customers',
-                'text' => 'We design fast, good-looking websites and Shopify stores for Indian businesses — and look after domains, hosting and updates so you can focus on selling.',
+                'text' => 'We build fast websites and Shopify stores, and run Google & Meta ads that bring Indian businesses real enquiries — with hosting and support handled for you.',
                 'cta' => 'Get a Free Quote',
                 'cta2' => 'WhatsApp Us',
                 'image' => null,
@@ -45,11 +45,15 @@ class Defaults
                     ['title' => 'Launch & support', 'text' => 'We go live, train you, and stay on call.'],
                 ],
             ],
+            'logos' => [
+                'client_heading' => 'Trusted by 100+ Businesses',
+                'platform_heading' => 'Platforms We Work With',
+            ],
             'audit' => [
                 'heading' => 'Get a Free Website Audit',
                 'text' => 'Send us your website. Within 24 hours we\'ll WhatsApp you a short report on speed, Google ranking and what is costing you customers.',
             ],
-            'show' => ['about' => true, 'stats' => true, 'process' => true, 'services' => true, 'projects' => true, 'team' => true, 'reviews' => true, 'blog' => true, 'audit' => true],
+            'show' => ['logos' => true, 'about' => true, 'stats' => true, 'process' => true, 'services' => true, 'projects' => true, 'team' => true, 'reviews' => true, 'blog' => true, 'audit' => true],
             'seo' => [
                 'title' => 'Website Design, Shopify & Hosting Company in India | Towercircle',
                 'description' => 'Towercircle builds fast websites and Shopify stores that bring customers, with managed domains and hosting. 100+ websites built. Get a free quote.',
@@ -64,8 +68,9 @@ class Defaults
             'email' => 'reach@towercircle.in',
             'phone' => '6302639638',
             'whatsapp' => '6302639638',
-            'footer_about' => 'Websites, Shopify stores, domains and hosting for growing businesses. 100+ websites built.',
+            'footer_about' => 'Websites, Shopify stores and performance marketing for growing businesses. 100+ websites built.',
             'hours' => 'Mon – Sat, 10am – 7pm',
+            'tagline' => 'Technology · Digital · Growth',
         ];
     }
 }

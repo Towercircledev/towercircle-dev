@@ -22,6 +22,8 @@
         </div>
     </section>
 
+    @include('partials.logos')
+
     <section class="stats">
         <div class="container grid g-4">
             @foreach (home('stats', []) as $s)

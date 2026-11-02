@@ -83,5 +83,5 @@
     @endif
 
     <button type="submit" class="btn btn-primary btn-block">{{ $button }} <svg class="icon"><use href="#i-arrow"/></svg></button>
-    <p class="form-note">We reply within a few hours on WhatsApp. No spam, ever.</p>
+    <p class="form-note">We reply within a few hours on WhatsApp. No spam. <a href="{{ route('privacy') }}" style="text-decoration:underline">Privacy policy</a></p>
 </form>

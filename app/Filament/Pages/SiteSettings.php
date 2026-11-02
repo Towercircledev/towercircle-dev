@@ -36,6 +36,7 @@ class SiteSettings extends Page implements HasForms
             'site' => Setting::get('site', []) + \App\Support\Defaults::site(),
             'pages' => Setting::get('pages', []) + ['team' => true, 'blog' => true, 'faq' => true],
             'tracking' => Setting::get('tracking', []),
+            'alerts' => Setting::get('alerts', []),
         ]);
     }
 
@@ -44,7 +45,7 @@ class SiteSettings extends Page implements HasForms
         return $schema->statePath('data')->components([
             Section::make('Business & contact')->columns(3)->schema([
                 TextInput::make('site.name')->label('Business name')->default('Towercircle')->required(),
-                TextInput::make('site.tagline')->maxLength(80),
+                TextInput::make('site.tagline')->maxLength(80)->helperText('Shown in the footer'),
                 TextInput::make('site.email')->email()->required(),
                 TextInput::make('site.phone')->tel()->regex('/^[6-9]\d{9}$/')->helperText('10-digit mobile'),
                 TextInput::make('site.whatsapp')->label('WhatsApp number')->tel()->regex('/^[6-9]\d{9}$/')->helperText('Powers every WhatsApp button'),
@@ -76,9 +77,19 @@ class SiteSettings extends Page implements HasForms
                     ->helperText('From Google Ads → Conversions → your "Lead form" action → Tag setup'),
                 TextInput::make('tracking.ads_conversion_name')->label('Offline conversion name')->placeholder('Client won')
                     ->helperText('Must match the name of your "Import from clicks" conversion action'),
-                TextInput::make('tracking.meta_pixel')->label('Meta Pixel ID (optional)'),
+                TextInput::make('tracking.meta_pixel')->label('Meta Pixel ID'),
+                TextInput::make('tracking.meta_capi_token')->label('Meta Conversions API token')->password()->revealable()
+                    ->helperText('Events Manager → your Pixel → Settings → Conversions API → Generate access token'),
+                TextInput::make('tracking.meta_test_code')->label('Meta test event code')
+                    ->helperText('Only while testing in Events Manager → Test events. Clear it afterwards.'),
                 TextInput::make('tracking.search_console')->label('Google Search Console code')->helperText('Only the content="…" value'),
             ]),
+            Section::make('Instant lead alerts (Telegram, free)')->columns(2)->collapsed()
+                ->description('Get every new lead on your phone in seconds. In Telegram, message @BotFather → /newbot and copy the token. Then send any message to your new bot and open api.telegram.org/bot<token>/getUpdates to find your chat ID.')
+                ->schema([
+                    TextInput::make('alerts.telegram_token')->label('Bot token')->password()->revealable(),
+                    TextInput::make('alerts.telegram_chat_id')->label('Chat ID')->helperText('For a group, add the bot to the group and use the group\'s chat ID (starts with -)'),
+                ]),
             Section::make('Default sharing image')->collapsed()->schema([
                 Fields::image('site.share_image', 'site', 'Share picture (1200 × 630)'),
             ]),
@@ -88,7 +99,7 @@ class SiteSettings extends Page implements HasForms
     public function save(): void
     {
         $state = $this->form->getState();
-        foreach (['site', 'pages', 'tracking'] as $key) {
+        foreach (['site', 'pages', 'tracking', 'alerts'] as $key) {
             Setting::put($key, $state[$key] ?? []);
         }
         Notification::make()->title('Settings saved')->success()->send();

@@ -141,6 +141,15 @@
                         @if (page_on('faq'))<li><a href="{{ route('faq') }}">FAQ</a></li>@endif
                         <li><a href="{{ route('contact') }}">Contact</a></li>
                     </ul>
+                    @php($footerLocations = \Illuminate\Support\Facades\Cache::remember('nav.locations', 600, fn () => \App\Models\Location::visible()->get(['city', 'slug'])->toArray()))
+                    @if ($footerLocations)
+                        <h3 style="margin-top:26px">Areas we serve</h3>
+                        <ul>
+                            @foreach ($footerLocations as $l)
+                                <li><a href="{{ route('location', $l['slug']) }}">{{ $l['city'] }}</a></li>
+                            @endforeach
+                        </ul>
+                    @endif
                 </div>
                 <div>
                     <h3>Get in touch</h3>
@@ -154,8 +163,8 @@
             </div>
             <div class="copyright">
                 <div class="container">
-                    <span>© {{ date('Y') }} {{ $siteName }}. All rights reserved.</span>
-                    <span>Websites · Shopify · Domains & Hosting</span>
+                    <span>© {{ date('Y') }} {{ $siteName }}. All rights reserved. · <a href="{{ route('privacy') }}">Privacy Policy</a> · <a href="{{ route('terms') }}">Terms</a></span>
+                    <span>{{ site('tagline') }}</span>
                 </div>
             </div>
         </footer>

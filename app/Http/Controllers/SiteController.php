@@ -20,6 +20,7 @@ class SiteController extends Controller
             'team' => page_on('team') ? TeamMember::visible()->take(4)->get() : collect(),
             'reviews' => Testimonial::visible()->take(9)->get(),
             'posts' => page_on('blog') ? Post::live()->take(3)->get() : collect(),
+            'logos' => \App\Models\Logo::visible()->get()->groupBy('group'),
         ]);
     }
 
@@ -27,6 +28,7 @@ class SiteController extends Controller
     {
         return view('site.about', [
             'reviews' => Testimonial::visible()->take(9)->get(),
+            'logos' => \App\Models\Logo::visible()->get()->groupBy('group'),
             'team' => page_on('team') ? TeamMember::visible()->take(4)->get() : collect(),
         ]);
     }
@@ -111,6 +113,39 @@ class SiteController extends Controller
         ]);
     }
 
+    public function privacy()
+    {
+        return view('site.legal', ['title' => 'Privacy Policy', 'body' => \App\Models\Setting::get('legal.privacy', \App\Support\LegalDefaults::privacy())]);
+    }
+
+    public function terms()
+    {
+        return view('site.legal', ['title' => 'Terms & Conditions', 'body' => \App\Models\Setting::get('legal.terms', \App\Support\LegalDefaults::terms())]);
+    }
+
+    public function location(\App\Models\Location $location)
+    {
+        abort_unless($location->is_visible, 404);
+
+        return view('site.location', [
+            'location' => $location,
+            'services' => Service::visible()->take(4)->get(),
+            'projects' => Project::visible()->take(2)->get(),
+        ]);
+    }
+
+    /** Any unknown address: follow a redirect from the admin if there is one, otherwise show the 404 page. */
+    public function fallback(\Illuminate\Http\Request $request)
+    {
+        $r = \App\Models\Redirect::where('from', \App\Models\Redirect::normalise($request->path()))->where('is_active', true)->first();
+        abort_unless($r, 404);
+        $r->increment('hits', 1, ['last_hit_at' => now()]);
+        $to = str_starts_with($r->to, 'http') ? $r->to : url($r->to);
+        $qs = $request->getQueryString();
+
+        return redirect()->away($to.($qs ? (str_contains($to, '?') ? '&' : '?').$qs : ''), $r->code);
+    }
+
     public function thanks()
     {
         return response()->view('site.thanks')->header('X-Robots-Tag', 'noindex');
@@ -118,7 +153,7 @@ class SiteController extends Controller
 
     public function sitemap()
     {
-        $urls = collect([route('home'), route('about'), route('services'), route('work'), route('contact')]);
+        $urls = collect([route('home'), route('about'), route('services'), route('work'), route('contact'), route('privacy'), route('terms')]);
         if (page_on('team')) {
             $urls->push(route('team'));
         }
@@ -132,6 +167,7 @@ class SiteController extends Controller
             $urls->push(['loc' => route('blog'), 'lastmod' => null]);
             Post::live()->get()->each(fn ($p) => $urls->push(['loc' => route('blog.show', $p), 'lastmod' => $p->updated_at]));
         }
+        \App\Models\Location::visible()->get()->each(fn ($l) => $urls->push(['loc' => route('location', $l), 'lastmod' => $l->updated_at]));
         LandingPage::where('is_visible', true)->where('noindex', false)->get()
             ->each(fn ($l) => $urls->push(['loc' => route('landing', $l), 'lastmod' => $l->updated_at]));
 

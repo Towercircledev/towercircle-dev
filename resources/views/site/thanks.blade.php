@@ -16,7 +16,7 @@
         gtag('event', 'generate_lead', { currency: 'INR' });
         @if ($adsId && $label)gtag('event', 'conversion', { send_to: '{{ $adsId }}/{{ $label }}', transaction_id: 'lead-{{ session('lead_id') }}' });@endif
     }
-    if (typeof fbq === 'function') fbq('track', 'Lead');
+    if (typeof fbq === 'function') fbq('track', 'Lead', {}, { eventID: 'lead-{{ session('lead_id') }}' });
 </script>
 @endpush
 @endif

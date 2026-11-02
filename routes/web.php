@@ -17,9 +17,14 @@ Route::controller(SiteController::class)->group(function () {
     Route::get('/team', 'team')->name('team');
     Route::get('/contact', 'contact')->name('contact');
     Route::get('/lp/{landingPage}', 'landing')->name('landing');
+    Route::get('/in/{location}', 'location')->name('location');
+    Route::get('/privacy-policy', 'privacy')->name('privacy');
+    Route::get('/terms-and-conditions', 'terms')->name('terms');
     Route::get('/thank-you', 'thanks')->name('thanks');
     Route::get('/sitemap.xml', 'sitemap')->name('sitemap');
     Route::get('/robots.txt', 'robots');
 });
 
 Route::post('/enquiry', [LeadController::class, 'store'])->middleware('throttle:6,10')->name('lead.store');
+
+Route::fallback([SiteController::class, 'fallback']);
