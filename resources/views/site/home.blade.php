@@ -104,9 +104,36 @@
         </section>
     @endif
 
+    {{-- Custom software --}}
+    @if ($show('software'))
+        @php($softIcons = ['funnel', 'users', 'box', 'receipt', 'cal', 'lock', 'code', 'chart', 'server'])
+        <section class="section">
+            <div class="container">
+                <div class="section-head">
+                    <span class="eyebrow">{{ home('software.eyebrow') }}</span>
+                    <h2>{{ home('software.heading') }}</h2>
+                    <p>{{ home('software.text') }}</p>
+                </div>
+                <div class="grid g-3 soft-grid">
+                    @foreach (home('software.items', []) as $i => $it)
+                        <div class="card reveal">
+                            <div class="icon-box grad"><svg class="icon"><use href="#i-{{ $softIcons[$i] ?? 'code' }}"/></svg></div>
+                            <h3>{{ $it['title'] }}</h3>
+                            <p>{{ $it['text'] ?? '' }}</p>
+                        </div>
+                    @endforeach
+                </div>
+                <div class="soft-cta">
+                    <a href="{{ route('services.show', 'custom-software-development') }}" class="btn btn-primary">Explore custom software <svg class="icon"><use href="#i-arrow"/></svg></a>
+                    <a href="{{ wa_link('Hi Towercircle, I need custom software (CRM / HRM / ERP) for my business.') }}" class="btn btn-light" target="_blank" rel="noopener"><svg class="icon" style="color:#1fa855"><use href="#i-wa"/></svg> Discuss your idea</a>
+                </div>
+            </div>
+        </section>
+    @endif
+
     {{-- Process --}}
     @if ($show('process'))
-        <section class="section">
+        <section class="section bg-soft">
             <div class="container split">
                 <div class="reveal">
                     <span class="eyebrow">How we work</span>
@@ -125,7 +152,7 @@
 
     {{-- Projects --}}
     @if ($show('projects') && $projects->isNotEmpty())
-        <section class="section bg-soft">
+        <section class="section">
             <div class="container">
                 <div class="section-head">
                     <span class="eyebrow">Recent work</span>
@@ -143,7 +170,7 @@
 
     {{-- Team --}}
     @if ($show('team') && $team->isNotEmpty())
-        <section class="section">
+        <section class="section bg-soft">
             <div class="container">
                 <div class="section-head">
                     <span class="eyebrow">Our team</span>
@@ -160,7 +187,7 @@
 
     {{-- Reviews --}}
     @if ($show('reviews') && $reviews->isNotEmpty())
-        <section class="section bg-soft">
+        <section class="section">
             <div class="container">
                 <div class="section-head">
                     <span class="eyebrow">Client reviews</span>
@@ -178,7 +205,7 @@
 
     {{-- Blog --}}
     @if ($show('blog') && $posts->isNotEmpty())
-        <section class="section">
+        <section class="section bg-soft">
             <div class="container">
                 <div class="section-head">
                     <span class="eyebrow">From the blog</span>
@@ -195,7 +222,16 @@
 
     {{-- Free audit --}}
     @if ($show('audit'))
-        <section class="section" id="audit" style="padding-top:{{ ($show('reviews') && $reviews->isNotEmpty() && !($show('blog') && $posts->isNotEmpty())) ? '96px' : '0' }}">
+        <?php
+            $lastSoft = match (true) {
+                $show('blog') && $posts->isNotEmpty() => true,
+                $show('reviews') && $reviews->isNotEmpty() => false,
+                $show('team') && $team->isNotEmpty() => true,
+                $show('projects') && $projects->isNotEmpty() => false,
+                default => (bool) $show('process'),
+            };
+        ?>
+        <section class="section" id="audit" style="padding-top:{{ $lastSoft ? '96px' : '0' }}">
             <div class="container">
                 <div class="cta-box">
                     <div>

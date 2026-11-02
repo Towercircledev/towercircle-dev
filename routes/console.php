@@ -78,6 +78,27 @@ Artisan::command('tc:daily-digest', function () {
     $this->info(count($lines).' lines sent.');
 })->purpose('Morning summary: renewals due in 30/7 days, overdue payments, tasks and down sites');
 
+Artisan::command('tc:service-content {--force : Overwrite pages you already edited}', function () {
+    foreach (\App\Support\ServiceContent::all() as $slug => $c) {
+        $s = \App\Models\Service::firstOrNew(['slug' => $slug]);
+        $placeholder = ! $s->exists || mb_strlen(strip_tags((string) $s->body)) < 400;
+        if (! $placeholder && ! $this->option('force')) {
+            $this->line("skip  $slug (already has content)");
+            continue;
+        }
+        $s->fill([
+            'title' => $c['title'], 'short_description' => $c['short'], 'body' => $c['body'],
+            'features' => $c['features'], 'faqs' => $c['faqs'],
+            'seo_title' => $s->seo_title ?: $c['seo_title'], 'seo_description' => $s->seo_description ?: $c['seo_description'],
+        ]);
+        if (! $s->exists) {
+            $s->fill(['is_featured' => true, 'is_visible' => true, 'sort' => $c['sort']]);
+        }
+        $s->save();
+        $this->info(($s->wasRecentlyCreated ? 'added ' : 'filled ').$slug);
+    }
+})->purpose('Fill service pages with the written starter content (skips pages you have edited)');
+
 Schedule::command('tc:check-sites')->everyFiveMinutes()->withoutOverlapping();
 Schedule::command('tc:check-ssl')->dailyAt('06:30');
 Schedule::command('tc:daily-digest')->dailyAt('09:00');

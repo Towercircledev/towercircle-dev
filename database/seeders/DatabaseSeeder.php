@@ -17,37 +17,11 @@ class DatabaseSeeder extends Seeder
         Setting::firstOrCreate(['key' => 'site'], ['value' => Defaults::site() + ['lead_emails' => 'reach@towercircle.in']]);
         Setting::firstOrCreate(['key' => 'pages'], ['value' => ['team' => true, 'blog' => true, 'faq' => true]]);
 
-        $services = [
-            ['Shopify Store Development', 'shopify-store-development', 's1', 'A complete Shopify store — design, products, payments, shipping and apps — ready to sell from day one.', [
-                'Custom theme design for your brand', 'Product, collection and menu setup', 'Razorpay / UPI payments and shipping', 'WhatsApp, reviews and marketing apps', 'Mobile-first, fast-loading store', 'Training to manage orders yourself',
-            ]],
-            ['Custom Website Design', 'website-design-development', 's2', 'Fast, modern business websites that look great on mobile and are built to rank on Google.', [
-                'Unique design — no cookie-cutter templates', 'Enquiry forms and WhatsApp button', 'Basic on-page SEO setup', 'Easy admin to edit content', 'Loads in under 2 seconds',
-            ]],
-            ['E-commerce Website', 'ecommerce-website-development', 's3', 'Custom online stores and web apps for businesses that need more than an off-the-shelf store.', [
-                'Custom catalogue, cart and checkout', 'Payment gateway integration', 'Admin panel for orders and stock', 'Invoices and email notifications',
-            ]],
-            ['Domains & Hosting', 'domain-hosting', 's4', 'Domain registration, fast cloud hosting, business email and SSL — fully managed by us.', [
-                'Domain registration and renewals', 'Fast, secure cloud hosting', 'Business email setup', 'Free SSL and daily backups',
-            ]],
-            ['Digital & Performance Marketing', 'digital-performance-marketing', 's5', 'Google Ads and Meta (Facebook & Instagram) campaigns built for leads and sales — tracked to real enquiries, not just clicks.', [
-                'Google Search & Performance Max campaigns', 'Facebook & Instagram ads', 'Landing pages built to convert', 'Conversion tracking (GA4, Google Ads, Meta Pixel)', 'Monthly report: leads, cost per lead, sales',
-            ]],
-            ['Website Speed & SEO', 'website-speed-seo', 's5', 'Slow or invisible on Google? We fix speed, technical SEO and Google Business Profile.', [
-                'Speed optimisation (Core Web Vitals)', 'Technical SEO fixes', 'Google Search Console & Analytics setup', 'Google Business Profile optimisation',
-            ]],
-            ['Website Maintenance', 'website-maintenance', 's6', 'Monthly care plans: updates, backups, security checks and small changes whenever you need them.', [
-                'Regular updates and backups', 'Security monitoring', 'Content changes on request', 'Priority WhatsApp support',
-            ]],
-        ];
-        foreach ($services as $i => [$title, $slug, $icon, $short, $features]) {
+        foreach (\App\Support\ServiceContent::all() as $slug => $c) {
             Service::firstOrCreate(['slug' => $slug], [
-                'title' => $title,
-                'short_description' => $short,
-                'body' => '<p>'.$short.'</p><p>Tell us about your business and goals — we\'ll recommend the right setup and give you a fixed price before any work starts.</p>',
-                'features' => $features,
-                'is_featured' => true,
-                'sort' => $i,
+                'title' => $c['title'], 'short_description' => $c['short'], 'body' => $c['body'],
+                'features' => $c['features'], 'faqs' => $c['faqs'], 'is_featured' => true, 'sort' => $c['sort'],
+                'seo_title' => $c['seo_title'], 'seo_description' => $c['seo_description'],
             ]);
         }
 

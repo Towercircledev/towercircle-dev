@@ -76,6 +76,16 @@ class HomepageContent extends Page implements HasForms
                 Repeater::make('about.points')->label('Tick points')->simple(TextInput::make('p')->required()->maxLength(80))
                     ->maxItems(5)->columnSpanFull(),
             ]),
+            Section::make('Custom software section')->collapsed()->columns(2)->schema([
+                self::toggle('software'),
+                TextInput::make('software.eyebrow')->maxLength(40),
+                TextInput::make('software.heading')->maxLength(100),
+                Textarea::make('software.text')->rows(2)->columnSpanFull(),
+                Repeater::make('software.items')->label('Software types')->schema([
+                    TextInput::make('title')->required()->maxLength(40),
+                    TextInput::make('text')->maxLength(140),
+                ])->columns(2)->maxItems(9)->columnSpanFull(),
+            ]),
             Section::make('Numbers bar')->collapsed()->schema([
                 self::toggle('stats'),
                 Repeater::make('stats')->hiddenLabel()->schema([

@@ -12,7 +12,7 @@ class Defaults
                 'eyebrow' => 'Technology · Digital · Growth',
                 'heading' => 'Websites That Bring You Customers',
                 'highlight' => 'Customers',
-                'text' => 'We build fast websites and Shopify stores, and run Google & Meta ads that bring Indian businesses real enquiries — with hosting and support handled for you.',
+                'text' => 'Websites, Shopify stores and custom business software — plus Google & Meta ads that bring real enquiries. One team for everything your business needs online.',
                 'cta' => 'Get a Free Quote',
                 'cta2' => 'WhatsApp Us',
                 'image' => null,
@@ -35,6 +35,19 @@ class Defaults
                 ['number' => 5, 'suffix' => '+', 'label' => 'Years of experience'],
                 ['number' => 24, 'suffix' => 'h', 'label' => 'Support response'],
             ],
+            'software' => [
+                'eyebrow' => 'Custom software',
+                'heading' => 'Software Built Around Your Business',
+                'text' => 'Stop juggling Excel sheets and WhatsApp groups. We build CRM, HRM, ERP and other business software that fits exactly how you work — on the web, on mobile, owned by you.',
+                'items' => [
+                    ['title' => 'CRM', 'text' => 'Every lead in one place, follow-up reminders, quotes and sales pipeline.'],
+                    ['title' => 'HRM & Payroll', 'text' => 'Attendance, leave, salary slips and employee records.'],
+                    ['title' => 'ERP & Inventory', 'text' => 'Purchase, stock, production and sales in one system.'],
+                    ['title' => 'Billing & GST Invoicing', 'text' => 'Invoices, payments, outstanding and reminders.'],
+                    ['title' => 'Booking & Scheduling', 'text' => 'Online bookings, time slots, staff and payments.'],
+                    ['title' => 'Client & Vendor Portals', 'text' => 'Secure logins for customers and partners to see orders and documents.'],
+                ],
+            ],
             'process' => [
                 'heading' => 'From Idea to Launch in Four Simple Steps',
                 'text' => 'A clear process so you always know what is happening and when your website goes live.',
@@ -53,7 +66,7 @@ class Defaults
                 'heading' => 'Get a Free Website Audit',
                 'text' => 'Send us your website. Within 24 hours we\'ll WhatsApp you a short report on speed, Google ranking and what is costing you customers.',
             ],
-            'show' => ['logos' => true, 'about' => true, 'stats' => true, 'process' => true, 'services' => true, 'projects' => true, 'team' => true, 'reviews' => true, 'blog' => true, 'audit' => true],
+            'show' => ['software' => true, 'logos' => true, 'about' => true, 'stats' => true, 'process' => true, 'services' => true, 'projects' => true, 'team' => true, 'reviews' => true, 'blog' => true, 'audit' => true],
             'seo' => [
                 'title' => 'Website Design, Shopify & Hosting Company in India | Towercircle',
                 'description' => 'Towercircle builds fast websites and Shopify stores that bring customers, with managed domains and hosting. 100+ websites built. Get a free quote.',
