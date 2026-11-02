@@ -12,7 +12,7 @@
     if ($hl = home('hero.highlight')) {
         $heading = preg_replace('/'.preg_quote(e($hl), '/').'/', '<span class="mark">'.e($hl).'</span>', $heading, 1);
     }
-    $icons = ['store', 'code', 'server', 'bolt'];
+    $icons = ['store', 'code', 'chart', 'bolt'];
 @endphp
 
 @section('content')

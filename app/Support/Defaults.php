@@ -20,7 +20,7 @@ class Defaults
             'highlights' => [
                 ['title' => 'Shopify Stores', 'text' => 'Online stores set up to sell from day one.'],
                 ['title' => 'Custom Websites', 'text' => 'Fast business websites built to rank on Google.'],
-                ['title' => 'Domains & Hosting', 'text' => 'Reliable hosting, email and SSL, fully managed.'],
+                ['title' => 'Digital & Performance Marketing', 'text' => 'Google & Meta ads that bring leads, not just clicks.'],
                 ['title' => 'Speed & SEO', 'text' => 'Slow site? We make it load in under 2 seconds.'],
             ],
             'about' => [

@@ -30,6 +30,9 @@ class DatabaseSeeder extends Seeder
             ['Domains & Hosting', 'domain-hosting', 's4', 'Domain registration, fast cloud hosting, business email and SSL — fully managed by us.', [
                 'Domain registration and renewals', 'Fast, secure cloud hosting', 'Business email setup', 'Free SSL and daily backups',
             ]],
+            ['Digital & Performance Marketing', 'digital-performance-marketing', 's5', 'Google Ads and Meta (Facebook & Instagram) campaigns built for leads and sales — tracked to real enquiries, not just clicks.', [
+                'Google Search & Performance Max campaigns', 'Facebook & Instagram ads', 'Landing pages built to convert', 'Conversion tracking (GA4, Google Ads, Meta Pixel)', 'Monthly report: leads, cost per lead, sales',
+            ]],
             ['Website Speed & SEO', 'website-speed-seo', 's5', 'Slow or invisible on Google? We fix speed, technical SEO and Google Business Profile.', [
                 'Speed optimisation (Core Web Vitals)', 'Technical SEO fixes', 'Google Search Console & Analytics setup', 'Google Business Profile optimisation',
             ]],
