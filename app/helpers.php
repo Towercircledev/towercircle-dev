@@ -62,3 +62,10 @@ if (! function_exists('inr')) {
         return '₹'.$rest.$last3;
     }
 }
+
+if (! function_exists('admin_path')) {
+    function admin_path(string $path = ''): string
+    {
+        return '/'.trim(config('app.admin_path'), '/').($path ? '/'.ltrim($path, '/') : '');
+    }
+}

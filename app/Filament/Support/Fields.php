@@ -30,11 +30,12 @@ class Fields
             ->helperText('The web address. Short, lowercase, words joined with hyphens.');
     }
 
-    public static function image(string $name, string $dir, string $label = null): FileUpload
+    public static function image(string $name, string $dir, ?string $label = null): FileUpload
     {
         return FileUpload::make($name)->label($label ?? Str::headline($name))->image()->disk('public')->directory($dir)
-            ->maxSize(3072)->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'])
-            ->helperText('JPG, PNG, WebP or SVG, under 3 MB. Large photos are resized automatically.');
+            ->maxSize(8192)->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'])
+            ->saveUploadedFileUsing(fn ($file) => \App\Support\ImageOptimizer::store($file, $dir))
+            ->helperText('JPG, PNG, WebP or SVG. Photos are resized and converted to WebP automatically.');
     }
 
     public static function visibility(bool $withFeatured = false): Section

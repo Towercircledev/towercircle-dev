@@ -10,6 +10,8 @@ class LeadStats extends StatsOverviewWidget
 {
     protected static ?int $sort = 1;
 
+    protected ?string $heading = "Leads";
+
     protected function getStats(): array
     {
         $month = Lead::where('status', '!=', 'spam')->where('created_at', '>=', now()->startOfMonth());

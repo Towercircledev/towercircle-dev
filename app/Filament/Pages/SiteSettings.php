@@ -16,7 +16,7 @@ use Filament\Schemas\Schema;
 
 class SiteSettings extends Page implements HasForms
 {
-    use InteractsWithForms;
+    use \App\Filament\Concerns\AdminOnly, InteractsWithForms;
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-cog-6-tooth';
 
@@ -37,6 +37,7 @@ class SiteSettings extends Page implements HasForms
             'pages' => Setting::get('pages', []) + ['team' => true, 'blog' => true, 'faq' => true],
             'tracking' => Setting::get('tracking', []),
             'alerts' => Setting::get('alerts', []),
+            'invoice' => Setting::get('invoice', []) + ['prefix' => 'TC', 'default_gst' => 18],
         ]);
     }
 
@@ -55,6 +56,9 @@ class SiteSettings extends Page implements HasForms
                 TextInput::make('site.map_embed')->label('Google Maps embed link')->url()->columnSpanFull()
                     ->helperText('Google Maps → Share → Embed a map → copy only the link inside src="…"'),
                 Textarea::make('site.footer_about')->label('Footer text')->rows(2)->maxLength(250)->columnSpanFull(),
+                Textarea::make('site.auto_reply')->label('Auto-reply email to customers')->rows(4)->columnSpanFull()
+                    ->placeholder("Thanks for contacting Towercircle! We've received your enquiry and will reply within a few hours.")
+                    ->helperText('Sent to anyone who leaves an email in a form. Your WhatsApp link and phone are added automatically. Leave empty to use the default text.'),
                 TextInput::make('site.lead_emails')->label('Send new-lead alerts to')->columnSpanFull()
                     ->helperText('One or more emails, separated by commas'),
             ]),
@@ -64,6 +68,23 @@ class SiteSettings extends Page implements HasForms
                 TextInput::make('site.linkedin')->label('LinkedIn')->url(),
                 TextInput::make('site.youtube')->label('YouTube')->url(),
                 TextInput::make('site.google_reviews')->label('Google reviews link')->url(),
+            ]),
+            Section::make('Testing mode')->schema([
+                Toggle::make('site.noindex')->label('Hide the whole website from Google')
+                    ->helperText('Keep ON while testing on new.towercircle.in. Turn OFF on launch day, or Google will not list the site.'),
+            ]),
+            Section::make('Invoices')->columns(3)->collapsed()
+                ->description('Printed on every invoice PDF.')->schema([
+                TextInput::make('invoice.legal_name')->label('Legal name')->placeholder('Towercircle LLP')->columnSpan(2),
+                TextInput::make('invoice.prefix')->label('Invoice prefix')->default('TC')->maxLength(4)->alphaNum()
+                    ->helperText('Numbers look like TC/2026-27/0001'),
+                Textarea::make('invoice.address')->rows(2)->columnSpan(2),
+                TextInput::make('invoice.gstin')->label('GSTIN')->maxLength(15),
+                TextInput::make('invoice.state')->label('State')->placeholder('Telangana'),
+                TextInput::make('invoice.default_gst')->label('Default GST %')->numeric()->default(18),
+                TextInput::make('invoice.upi')->label('UPI ID for payments')->placeholder('towercircle@okhdfc'),
+                Textarea::make('invoice.bank')->label('Bank details')->rows(3)->columnSpan(2),
+                Textarea::make('invoice.footer')->label('Footer note')->rows(3),
             ]),
             Section::make('Pages on/off')->description('Hidden pages disappear from the menu, footer, homepage and Google.')->columns(3)->schema([
                 Toggle::make('pages.team')->label('Team'),
@@ -99,7 +120,7 @@ class SiteSettings extends Page implements HasForms
     public function save(): void
     {
         $state = $this->form->getState();
-        foreach (['site', 'pages', 'tracking', 'alerts'] as $key) {
+        foreach (['site', 'pages', 'tracking', 'alerts', 'invoice'] as $key) {
             Setting::put($key, $state[$key] ?? []);
         }
         Notification::make()->title('Settings saved')->success()->send();

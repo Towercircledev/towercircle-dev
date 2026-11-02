@@ -67,6 +67,10 @@ return [
 
     'timezone' => 'Asia/Kolkata',
 
+    'admin_path' => env('ADMIN_PATH', 'admin'),
+
+    'admin_2fa_required' => (bool) env('ADMIN_2FA_REQUIRED', true),
+
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration

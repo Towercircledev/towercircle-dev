@@ -122,6 +122,14 @@ class LeadResource extends Resource
         return $n ? (string) $n : null;
     }
 
+    public static function getRelations(): array
+    {
+        return [
+            \App\Filament\RelationManagers\ActivitiesRelationManager::class,
+            \App\Filament\RelationManagers\TasksRelationManager::class,
+        ];
+    }
+
     public static function getPages(): array
     {
         return [

@@ -14,7 +14,7 @@ use Filament\Schemas\Schema;
 
 class LegalPages extends Page implements HasForms
 {
-    use InteractsWithForms;
+    use \App\Filament\Concerns\AdminOnly, InteractsWithForms;
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-scale';
 

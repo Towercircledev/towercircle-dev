@@ -45,6 +45,38 @@ class ListLeads extends ListRecords
                         fclose($out);
                     }, 'google-ads-conversions-'.now()->format('Y-m-d').'.csv');
                 }),
+            Action::make('csv')
+                ->label('Export')
+                ->icon('heroicon-o-table-cells')
+                ->color('gray')
+                ->modalDescription('Downloads a CSV file that opens in Excel or Google Sheets.')
+                ->schema([
+                    DatePicker::make('from')->default(now()->subDays(90))->required()->native(false),
+                    DatePicker::make('to')->default(now())->required()->native(false),
+                    Select::make('status')->options(Lead::STATUSES)->multiple()->placeholder('All statuses'),
+                    Select::make('source')->options(['Google Ads' => 'Google Ads', 'Meta Ads' => 'Meta Ads', 'Organic search' => 'Organic search', 'Direct' => 'Direct', 'Other' => 'Other'])->multiple()->placeholder('All sources'),
+                ])
+                ->action(function (array $data) {
+                    $leads = Lead::whereBetween('created_at', [\Illuminate\Support\Carbon::parse($data['from'])->startOfDay(), \Illuminate\Support\Carbon::parse($data['to'])->endOfDay()])
+                        ->when($data['status'] ?? null, fn ($q, $s) => $q->whereIn('status', $s))
+                        ->orderBy('created_at')->get()
+                        ->when($data['source'] ?? null, fn ($c, $src) => $c->filter(fn ($l) => in_array($l->sourceGroup(), $src, true)));
+
+                    return response()->streamDownload(function () use ($leads) {
+                        $out = fopen('php://output', 'w');
+                        fwrite($out, "\xEF\xBB\xBF"); // so Excel shows ₹ and other symbols correctly
+                        fputcsv($out, ['Received', 'Name', 'Phone', 'Email', 'Company', 'Website', 'Service', 'Budget', 'Timeline', 'Message', 'Status', 'Deal value', 'Source', 'Campaign', 'Keyword', 'Follow up', 'Notes']);
+                        foreach ($leads as $l) {
+                            fputcsv($out, [
+                                $l->created_at->format('Y-m-d H:i'), $l->name, $l->phone, $l->email, $l->company, $l->website, $l->service,
+                                Lead::BUDGETS[$l->budget] ?? $l->budget, Lead::TIMELINES[$l->timeline] ?? $l->timeline, $l->message,
+                                Lead::STATUSES[$l->status] ?? $l->status, $l->deal_value, $l->sourceLabel(), $l->utm_campaign, $l->utm_term,
+                                $l->follow_up_on?->format('Y-m-d'), $l->notes,
+                            ]);
+                        }
+                        fclose($out);
+                    }, 'leads-'.now()->format('Y-m-d').'.csv', ['Content-Type' => 'text/csv; charset=UTF-8']);
+                }),
             CreateAction::make()->label('Add lead'),
         ];
     }

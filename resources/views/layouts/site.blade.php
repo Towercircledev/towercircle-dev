@@ -18,7 +18,7 @@
     <title>{{ $fullTitle }}</title>
     <meta name="description" content="{{ \Illuminate\Support\Str::limit(strip_tags($description), 160) }}">
     <link rel="canonical" href="{{ $canonical }}">
-    @hasSection('noindex')<meta name="robots" content="noindex, follow">@endif
+    @if (trim($__env->yieldContent('noindex')) || \App\Models\Setting::get('site.noindex'))<meta name="robots" content="noindex, nofollow">@endif
     @if ($sc = \App\Models\Setting::get('tracking.search_console'))<meta name="google-site-verification" content="{{ $sc }}">@endif
     <meta name="theme-color" content="#2b1b8a">
     <meta property="og:type" content="website">

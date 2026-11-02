@@ -36,6 +36,7 @@ class Lead extends Model
     protected $casts = [
         'follow_up_on' => 'date',
         'converted_at' => 'datetime',
+        'auto_reply_sent_at' => 'datetime',
     ];
 
     protected static function booted(): void
@@ -55,6 +56,32 @@ class Lead extends Model
                 }
             }
         });
+    }
+
+    public function activities(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    {
+        return $this->morphMany(Activity::class, 'subject')->latest('happened_at');
+    }
+
+    public function tasks(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Task::class);
+    }
+
+    public function client(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Client::class);
+    }
+
+    public function sourceGroup(): string
+    {
+        $l = $this->sourceLabel();
+        if (str_starts_with($l, 'Google Ads')) return 'Google Ads';
+        if (str_starts_with($l, 'Meta Ads')) return 'Meta Ads';
+        if ($l === 'Direct') return 'Direct';
+        if (preg_match('/google|bing|duckduckgo|yahoo/i', $l)) return 'Organic search';
+
+        return 'Other';
     }
 
     public function sourceLabel(): string

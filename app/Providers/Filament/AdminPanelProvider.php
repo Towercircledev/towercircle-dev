@@ -26,7 +26,7 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
+            ->path(config('app.admin_path'))
             ->login()
             ->passwordReset()
             ->profile()
@@ -38,9 +38,14 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => Color::generateV3Palette('#4A1A8C'),
                 'gray' => Color::Slate,
             ])
+            ->multiFactorAuthentication([
+                \Filament\Auth\MultiFactor\App\AppAuthentication::make()->recoverable(),
+            ], isRequired: (bool) config('app.admin_2fa_required'))
+            ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
             ->sidebarCollapsibleOnDesktop()
             ->navigationGroups([
                 \Filament\Navigation\NavigationGroup::make('Leads'),
+                \Filament\Navigation\NavigationGroup::make('Clients'),
                 \Filament\Navigation\NavigationGroup::make('Website'),
                 \Filament\Navigation\NavigationGroup::make('Settings'),
             ])

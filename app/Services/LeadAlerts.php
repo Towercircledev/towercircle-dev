@@ -13,7 +13,7 @@ class LeadAlerts
 {
     public static function dispatch(Lead $lead): void
     {
-        foreach (['email', 'telegram', 'meta'] as $step) {
+        foreach (['email', 'telegram', 'autoReply', 'meta'] as $step) {
             try {
                 static::{$step}($lead);
             } catch (\Throwable $e) {
@@ -39,7 +39,7 @@ class LeadAlerts
         }
         $body = "New enquiry from the website\n\n".static::summary($lead)."\n\n"
             .'WhatsApp: https://wa.me/91'.$lead->phone."\n"
-            .'Open in admin: '.url('/admin/leads/'.$lead->id.'/edit');
+            .'Open in admin: '.url(admin_path('leads/'.$lead->id.'/edit'));
 
         Mail::raw($body, fn ($m) => $m->to($to)->subject('New lead: '.$lead->name.($lead->service ? ' – '.$lead->service : '')));
     }
@@ -47,16 +47,30 @@ class LeadAlerts
     /** Free instant alert: create a bot with @BotFather, then put the bot token and your chat ID in Site settings. */
     public static function telegram(Lead $lead): void
     {
-        $token = Setting::get('alerts.telegram_token');
-        $chat = Setting::get('alerts.telegram_chat_id');
-        if (! $token || ! $chat) {
+        Notify::telegram("🔔 New lead\n\n".static::summary($lead)."\n\nWhatsApp: https://wa.me/91{$lead->phone}\nAdmin: ".url(admin_path('leads/'.$lead->id.'/edit')));
+    }
+
+    /** Thank-you email to the customer, so they know the enquiry arrived and how to reach you faster. */
+    public static function autoReply(Lead $lead): void
+    {
+        if (! $lead->email || $lead->auto_reply_sent_at) {
             return;
         }
-        Http::timeout(5)->post("https://api.telegram.org/bot{$token}/sendMessage", [
-            'chat_id' => $chat,
-            'text' => "🔔 New lead\n\n".static::summary($lead)."\n\nWhatsApp: https://wa.me/91{$lead->phone}\nAdmin: ".url('/admin/leads/'.$lead->id.'/edit'),
-            'disable_web_page_preview' => true,
-        ]);
+        $first = trim(strtok($lead->name, ' '));
+        $intro = trim((string) site('auto_reply')) ?: "Thanks for contacting ".site('name')."! We've received your enquiry".($lead->service ? " about {$lead->service}" : '')." and will get back to you within a few hours (Mon – Sat).";
+        $body = "Hi {$first},\n\n{$intro}\n\n"
+            ."Want a faster reply? WhatsApp us: ".wa_link('Hi, I just sent an enquiry on your website ('.$lead->name.').')."\n"
+            .'Or call: +91 '.site('phone')."\n\n"
+            ."See our recent work: ".route('work')."\n\n"
+            ."Regards,\nTeam ".site('name')."\n".url('/');
+
+        Mail::raw($body, function ($m) use ($lead) {
+            $m->to($lead->email, $lead->name)->subject('We got your enquiry – '.site('name'));
+            if ($reply = site('email')) {
+                $m->replyTo($reply, site('name'));
+            }
+        });
+        $lead->forceFill(['auto_reply_sent_at' => now()])->saveQuietly();
     }
 
     /**

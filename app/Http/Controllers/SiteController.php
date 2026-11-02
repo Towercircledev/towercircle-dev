@@ -176,7 +176,10 @@ class SiteController extends Controller
 
     public function robots()
     {
-        $body = "User-agent: *\nDisallow: /admin\nDisallow: /thank-you\n\nSitemap: ".route('sitemap')."\n";
+        if (\App\Models\Setting::get('site.noindex')) {
+            return response("User-agent: *\nDisallow: /\n")->header('Content-Type', 'text/plain');
+        }
+        $body = "User-agent: *\nDisallow: /".trim(config('app.admin_path'), '/')."\nDisallow: /thank-you\n\nSitemap: ".route('sitemap')."\n";
 
         return response($body)->header('Content-Type', 'text/plain');
     }

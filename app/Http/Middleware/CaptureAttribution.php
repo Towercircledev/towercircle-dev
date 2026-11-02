@@ -16,7 +16,7 @@ class CaptureAttribution
 
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->isMethod('GET') && ! $request->is('admin*', 'livewire*')) {
+        if ($request->isMethod('GET') && ! $request->is(trim(config('app.admin_path'), '/').'*', 'livewire*')) {
             $incoming = array_filter(array_map(
                 fn ($v) => is_string($v) ? mb_substr($v, 0, 190) : null,
                 $request->only(self::KEYS)
