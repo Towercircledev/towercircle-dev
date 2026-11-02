@@ -145,3 +145,30 @@ Artisan::command('tc:landing-ecommerce {--force : Reset the page content to the 
 Schedule::command('tc:check-sites')->everyFiveMinutes()->withoutOverlapping();
 Schedule::command('tc:check-ssl')->dailyAt('06:30');
 Schedule::command('tc:daily-digest')->dailyAt('09:00');
+
+Artisan::command('tc:projects {--force : Overwrite projects that already exist}', function () {
+    $disk = \Illuminate\Support\Facades\Storage::disk('public');
+    foreach (\App\Support\ProjectContent::all() as $slug => $p) {
+        $existing = \App\Models\Project::where('slug', $slug)->first();
+        if ($existing && ! $this->option('force')) {
+            $this->line("skip  {$slug} (already exists)");
+            continue;
+        }
+        $paths = [];
+        foreach ($p['images'] as $img) {
+            $path = "projects/{$img}.webp";
+            $disk->put($path, file_get_contents(resource_path("content/projects/{$img}.webp")));
+            $paths[] = $path;
+        }
+        \App\Models\Project::updateOrCreate(['slug' => $slug], [
+            'title' => $p['title'], 'client' => $p['client'], 'category' => $p['category'],
+            'cover' => $paths[0], 'gallery' => array_slice($paths, 1),
+            'summary' => $p['summary'], 'body' => trim($p['body']), 'highlights' => $p['highlights'],
+            'live_url' => $p['live_url'], 'location' => $p['location'], 'completed_on' => $p['completed_on'],
+            'is_featured' => $p['featured'], 'is_visible' => true, 'sort' => $p['sort'],
+            'seo_title' => \Illuminate\Support\Str::limit($p['title'], 60, ''), 'seo_description' => \Illuminate\Support\Str::limit($p['summary'], 155),
+        ]);
+        $this->info("saved {$slug}");
+    }
+    \Illuminate\Support\Facades\Cache::flush();
+})->purpose('Import portfolio case studies (Mihira, Tongue To Tail, Chahhat, GetShuddh)');
