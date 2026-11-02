@@ -108,7 +108,9 @@ class SiteController extends Controller
 
         return view($landingPage->template === 'ecommerce' ? 'site.landing-ecommerce' : 'site.landing', [
             'lp' => $landingPage,
-            'projects' => $landingPage->show_projects ? Project::visible()->take(4)->get() : collect(),
+            'projects' => $landingPage->show_projects ? Project::visible()
+                ->when($landingPage->template === 'ecommerce', fn ($query) => $query->whereIn('category', ['Shopify', 'E-commerce']))
+                ->take(4)->get() : collect(),
             'reviews' => $landingPage->show_testimonials ? Testimonial::visible()->take(6)->get() : collect(),
         ]);
     }
