@@ -46,19 +46,15 @@ class ClientSiteResource extends Resource
                 TextInput::make('live_url')->label('Website link')->url()->placeholder('Filled from the domain if empty'),
                 TextInput::make('admin_url')->label('Admin / login link')->url(),
             ])),
-            Section::make('Domain & hosting')->columns(2)->columnSpanFull()->schema([
-                TextInput::make('registrar')->label('Domain registrar')->placeholder('GoDaddy, Hostinger, BigRock…')->datalist(['GoDaddy', 'Hostinger', 'BigRock', 'Namecheap', 'Cloudflare', 'Google Domains', 'ResellerClub']),
-                TextInput::make('hosting_provider')->placeholder('Hostinger, AWS Lightsail, Shopify…')->datalist(['Hostinger', 'AWS Lightsail', 'DigitalOcean', 'GoDaddy', 'Shopify', 'Vercel', 'Netlify', 'cPanel reseller']),
-                TextInput::make('hosting_plan'),
-                TextInput::make('server_ip')->label('Server IP'),
-            ]),
-            Section::make('Domain & hosting logins')->columns(2)->columnSpanFull()
-                ->description('Stored encrypted. Only admins can see these.')
-                ->visible(fn () => auth()->user()?->isAdmin())->schema([
-                    TextInput::make('domain_login')->label('Domain account email / username')->placeholder('client.domain@gmail.com')->copyable()->autocomplete('off'),
-                    TextInput::make('domain_password')->label('Domain account password')->password()->revealable()->copyable()->autocomplete('new-password'),
-                    TextInput::make('hosting_login')->label('Hosting account email / username')->placeholder('client.hosting@gmail.com')->copyable()->autocomplete('off'),
-                    TextInput::make('hosting_password')->label('Hosting account password')->password()->revealable()->copyable()->autocomplete('new-password'),
+            Section::make('Domain & hosting')->columns(2)->columnSpanFull()
+                ->description('Logins are stored encrypted and shown only to admins.')
+                ->schema([
+                    TextInput::make('registrar')->label('Domain registrar')->placeholder('GoDaddy, Hostinger, BigRock…')->datalist(['GoDaddy', 'Hostinger', 'BigRock', 'Namecheap', 'Cloudflare', 'Google Domains', 'ResellerClub']),
+                    TextInput::make('hosting_provider')->placeholder('Hostinger, AWS Lightsail, Shopify…')->datalist(['Hostinger', 'AWS Lightsail', 'DigitalOcean', 'GoDaddy', 'Shopify', 'Vercel', 'Netlify', 'cPanel reseller']),
+                    TextInput::make('domain_login')->label('Domain login email / username')->placeholder('client.domain@gmail.com')->copyable()->autocomplete('off')->visible(fn () => auth()->user()?->isAdmin()),
+                    TextInput::make('hosting_login')->label('Hosting login email / username')->placeholder('client.hosting@gmail.com')->copyable()->autocomplete('off')->visible(fn () => auth()->user()?->isAdmin()),
+                    TextInput::make('domain_password')->label('Domain password')->password()->revealable()->copyable()->autocomplete('new-password')->visible(fn () => auth()->user()?->isAdmin()),
+                    TextInput::make('hosting_password')->label('Hosting password')->password()->revealable()->copyable()->autocomplete('new-password')->visible(fn () => auth()->user()?->isAdmin()),
                 ]),
             Section::make('Email')->columns(2)->columnSpanFull()->schema([
                 Select::make('email_provider')->options(ClientSite::EMAIL_PROVIDERS),
