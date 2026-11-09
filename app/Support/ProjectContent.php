@@ -89,6 +89,60 @@ HTML,
                     'WhatsApp chat for styling questions',
                 ],
             ],
+            'avanya-dental-clinic-software' => [
+                'title' => 'Avanya – Dental Clinic Management Software',
+                'client' => 'Avanya by Towercircle (our product)',
+                'category' => 'Web app',
+                'live_url' => 'https://avanya.site',
+                'location' => 'Hyderabad',
+                'completed_on' => null,
+                'featured' => true,
+                'sort' => 4,
+                'summary' => 'Our own cloud software for Indian dental clinics: appointments by chair, dental charts, GST billing, WhatsApp recalls, patient portal and daily reports, for one or many branches.',
+                'images' => ['avanya-dental-0', 'avanya-dental-1', 'avanya-dental-2', 'avanya-dental-3', 'avanya-dental-mobile'],
+                'body' => <<<'HTML'
+<h2>About the product</h2>
+<p>Avanya is Towercircle's own software for dental clinics. Reception, dentists, billing staff and the owner work on the same system in the browser, on a computer, tablet or phone, with nothing to install. It is built for Indian clinics: GST invoices, UPI and PhonePe payment links, WhatsApp reminders and prescriptions in English, Telugu or Hindi.</p>
+<h2>The problem it solves</h2>
+<p>Most clinics run on a register, WhatsApp and memory. Appointments clash, patients forget their check-ups, bills are handwritten with GST mistakes, X-rays sit in phone galleries, and nobody knows how the day went until the cash is counted at night.</p>
+<h2>What we built</h2>
+<p>A calendar by chair and doctor that can't double-book, a live queue (expected, waiting, in chair, done) and quick registration with duplicate checks. Dentists get an interactive dental chart with full history, treatment plans with printed estimates, X-rays per tooth, consent forms signed on screen and prescriptions with the doctor's signature.</p>
+<p>Billing produces GST-correct invoices with part payments, advances and online payment links, and big discounts or refunds need the owner's approval. Recalls and reminders go out automatically by WhatsApp, SMS and email, patients can book and download bills in their own portal, and the owner sees a daily summary of OPs and money by doctor and branch. Lab cases, inventory, expenses, staff roles and day-end cash closing are all included, with each clinic's data kept separate and stored in India.</p>
+HTML,
+                'highlights' => [
+                    'Calendar by chair and doctor, live queue and walk-ins',
+                    'Interactive dental chart, treatment plans, X-rays and e-consent',
+                    'GST billing, UPI payment links and owner approvals for discounts',
+                    'Automatic WhatsApp/SMS recalls, patient portal and daily reports',
+                ],
+            ],
+            'avanya-multi-specialty-clinic-software' => [
+                'title' => 'Avanya – Multi-Specialty Clinic Software',
+                'client' => 'Avanya by Towercircle (our product)',
+                'category' => 'Web app',
+                'live_url' => 'https://avanya.site',
+                'location' => 'Hyderabad',
+                'completed_on' => null,
+                'featured' => true,
+                'sort' => 5,
+                'summary' => 'One system for multi-doctor, multi-specialty clinics: specialty records, appointments by doctor and room, packages, GST billing and daily reports.',
+                'images' => ['avanya-multi-2', 'avanya-multi-0', 'avanya-multi-1', 'avanya-multi-3'],
+                'body' => <<<'HTML'
+<h2>About the product</h2>
+<p>The multi-specialty edition of Avanya runs a whole clinic from one screen: general physician, dermatology and aesthetics, obstetrics and gynaecology, orthopaedics, IV drips and infusions, weight loss, day-care surgery and dental. Each patient keeps one file, one bill and one set of reminders across every department.</p>
+<h2>The problem it solves</h2>
+<p>A clinic with many doctors and services ends up with one register for everyone, notes for each specialty on different papers, packages tracked from memory and GST applied wrongly, because medical services are exempt but aesthetic ones are taxed.</p>
+<h2>What we built</h2>
+<p>Each department gets ready-made records: vitals and prescriptions for physicians, before/after photos and session packages for dermatology, pregnancy tracking and antenatal reminders for gynaecology (with private notes only the treating doctor can see), X-ray uploads and physio sessions for orthopaedics, weight and BMI charts for weight-loss programmes, infusion records and bed tracking for IV drips, and OT schedules and discharge summaries for day-care surgery.</p>
+<p>Reception books by specialty, then doctor, with a calendar by doctor or room that prevents double booking. Billing sets GST per service, sells packages and tracks sessions left, and accepts cash, UPI, card and payment links. The owner sees patients per doctor and money in and out at the end of every day.</p>
+HTML,
+                'highlights' => [
+                    '8 specialties in one system, with one record per patient',
+                    'Booking by specialty, doctor and room, with no double booking',
+                    'Packages and programmes with sessions used and left',
+                    'Correct GST per service, daily reports per doctor and branch',
+                ],
+            ],
             'getshuddh-car-and-home-cleaning-booking-platform' => [
                 'title' => 'GetShuddh – Car & Home Cleaning Booking Platform',
                 'client' => 'GetShuddh (our product)',
@@ -97,7 +151,7 @@ HTML,
                 'location' => 'Hyderabad',
                 'completed_on' => '2026-11-03',
                 'featured' => true,
-                'sort' => 4,
+                'sort' => 6,
                 'summary' => 'Our own doorstep car and home cleaning service in Hyderabad, with online booking, live slots, car-type pricing and a full admin, built in Laravel.',
                 'images' => ['getshuddh-0', 'getshuddh-1', 'getshuddh-mobile'],
                 'body' => <<<'HTML'
