@@ -151,7 +151,8 @@ Artisan::command('tc:projects {--force : Overwrite projects that already exist}'
     foreach (\App\Support\ProjectContent::all() as $slug => $p) {
         $existing = \App\Models\Project::where('slug', $slug)->first();
         if ($existing && ! $this->option('force')) {
-            $this->line("skip  {$slug} (already exists)");
+            $existing->update(['sort' => $p['sort']]);
+            $this->line("skip  {$slug} (already exists, order updated)");
             continue;
         }
         $paths = [];
